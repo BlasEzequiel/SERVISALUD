@@ -1,0 +1,50 @@
+@startuml
+class com.EGG.ServiSalud.Entities.Profesional {
+- Especialidad especialidad
+- Double reputacion
+- Double valorConsultaConCS
+- Double valorConsultaSinCS
+}
+
+class com.EGG.ServiSalud.Entities.Turno {
+}
+enum com.EGG.ServiSalud.Entities.Enums.HorarioCita {
+}
+enum com.EGG.ServiSalud.Entities.Enums.CoberturaMedica {
+}
+class com.EGG.ServiSalud.Entities.Admin {
+}
+abstract class com.EGG.ServiSalud.Entities.Persona {
+- Long id
+- String nombre
+- String apellido
+- String mail
+- String password
+- String phone
+}
+
+enum com.EGG.ServiSalud.Entities.Enums.Especialidad {
++  CLINICO
++  CARDIOLOGO
+}
+
+class com.EGG.ServiSalud.Entities.CalendarioMedico {
+}
+class com.EGG.ServiSalud.Entities.FechaDisponible {
+}
+class com.EGG.ServiSalud.Entities.Paciente {
+- boolean coberturaSocial
+- String motivoDeConsulta
+- Date fechaNacimiento
+- Array[] historiaClinica
+- String fotoPerfil
+}
+
+class com.EGG.ServiSalud.Main.ServiSaludApplication {
++ {static} void main(String[])
+}
+
+
+
+com.EGG.ServiSalud.Entities.Persona <|-- com.EGG.ServiSalud.Entities.Paciente
+@enduml
