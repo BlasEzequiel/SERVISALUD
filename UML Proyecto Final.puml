@@ -1,38 +1,23 @@
 @startuml
-class com.EGG.ServiSalud.Entities.Profesional {
-- Especialidad especialidad
-- Double reputacion
-- Double valorConsultaConCS
-- Double valorConsultaSinCS
+enum com.EGG.ServiSalud.entities.Enums.Genero {
++  MASCULINO
++  FEMENINO
++  OTRO
 }
 
-class com.EGG.ServiSalud.Entities.Turno {
+class com.EGG.ServiSalud.entities.Turno {
 }
-enum com.EGG.ServiSalud.Entities.Enums.HorarioCita {
-}
-enum com.EGG.ServiSalud.Entities.Enums.CoberturaMedica {
-}
-class com.EGG.ServiSalud.Entities.Admin {
-}
-abstract class com.EGG.ServiSalud.Entities.Persona {
-- Long id
-- String nombre
-- String apellido
-- String mail
-- String password
-- String phone
+class com.EGG.ServiSalud.controllers.PortalController {
++ String index()
 }
 
-enum com.EGG.ServiSalud.Entities.Enums.Especialidad {
-+  CLINICO
-+  CARDIOLOGO
+enum com.EGG.ServiSalud.entities.Enums.CoberturaMedica {
 }
-
-class com.EGG.ServiSalud.Entities.CalendarioMedico {
+class com.EGG.ServiSalud.entities.Admin {
 }
-class com.EGG.ServiSalud.Entities.FechaDisponible {
+class com.EGG.ServiSalud.entities.CalendarioMedico {
 }
-class com.EGG.ServiSalud.Entities.Paciente {
+class com.EGG.ServiSalud.entities.Paciente {
 - boolean coberturaSocial
 - String motivoDeConsulta
 - Date fechaNacimiento
@@ -40,11 +25,65 @@ class com.EGG.ServiSalud.Entities.Paciente {
 - String fotoPerfil
 }
 
-class com.EGG.ServiSalud.Main.ServiSaludApplication {
+class com.EGG.ServiSalud.controllers.PersonaController {
+- PersonaService perService
++ Persona getPersona(Long)
++ String registrar()
+}
+
+
+interface com.EGG.ServiSalud.persistent.PersonaPersistent {
++ Persona buscarPorId(Long)
++ List<Persona> buscarPorNombre(String)
++ List<Persona> buscarPorApellido(String)
+}
+
+class com.EGG.ServiSalud.entities.Profesional {
+- Especialidad especialidad
+- Double reputacion
+- Double valorConsultaConCS
+- Double valorConsultaSinCS
+}
+
+enum com.EGG.ServiSalud.entities.Enums.HorarioCita {
+}
+class com.EGG.ServiSalud.entities.Persona {
+- Long idPersona
+- String nombre
+- String apellido
+- Genero genero
+- String fechaNacimiento
+- Integer dni
+- String mail
+- String password
+- String phone
+}
+
+enum com.EGG.ServiSalud.entities.Enums.Especialidad {
++  CLINICO
++  CARDIOLOGO
+}
+
+class com.EGG.ServiSalud.entities.FechaDisponible {
+}
+class com.EGG.ServiSalud.ServiSaludApplication {
 + {static} void main(String[])
+}
+
+class com.EGG.ServiSalud.exceptions.PersonaException {
+}
+class com.EGG.ServiSalud.services.PersonaService {
+- PersonaPersistent perRepositorio
++ Persona createPersona(String,String,Genero,String,String,Integer,String,String)
++ List<Persona> getAllPersonas()
++ Persona getPersonaById(Long)
++ Persona updatePersona(Long,Persona)
++ void deletePersona(Long)
 }
 
 
 
-com.EGG.ServiSalud.Entities.Persona <|-- com.EGG.ServiSalud.Entities.Paciente
+
+org.springframework.data.jpa.repository.JpaRepository <|-- com.EGG.ServiSalud.persistent.PersonaPersistent
+com.EGG.ServiSalud.exceptions.Exception <|-- com.EGG.ServiSalud.exceptions.PersonaException
 @enduml

@@ -1,9 +1,6 @@
-package com.EGG.ServiSalud.Entities;
+package com.EGG.ServiSalud.entities;
 
-import com.EGG.ServiSalud.Entities.Enums.Especialidad;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.EGG.ServiSalud.entities.Enums.Especialidad;
 
 
 public class Profesional {

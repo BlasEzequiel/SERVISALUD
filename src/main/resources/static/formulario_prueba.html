@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h2>Carga la persona Aqui</h2>
+        </div>
+    </header>
+    <div class="container">
+        <form action="persona/registro" method="POST">
+            <div class="form-group">
+                <input name="nombre" id="nombre" type="text" class="form-groups" placeholder="Ingresa tu nombre">
+                <label for="nombre">Nombre:</label>
+
+                <input name="apellido" id="apellido" type="text" class="form-groups" placeholder="Ingresa tu apellido">
+                <label for="apellido">Apellido:</label>
+
+                <select name="genero" id="genero">
+                    <option value="0" disabled selected>Selecciona el genero con el que te identificas:</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+
+                <input name="dni" id="dni" type="number" class="form-groups" placeholder="Ingresa tu dni">
+                <label for="dni"></label>
+
+                <input name="mail" id="mail" type="email" class="form-groups" placeholder="Ingresa tu e-mail">
+                <label for="mail"></label>
+
+                <input name="password" id="password" type="text" class="form-groups" placeholder="Ingresa tu contraseña">
+                <label for="nombre"></label>
+
+                <input name="telefono" id="telefono" type="text" class="form-groups" placeholder="Ingresa tu telefono">
+                <label for="telefono"></label>
+            </div>
+            <button type="submit" > Enviar </button>
+        </form>
+    </div>
+</body>
+</html>
