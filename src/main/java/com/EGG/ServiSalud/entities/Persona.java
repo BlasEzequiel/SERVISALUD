@@ -6,54 +6,30 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Entity
-@Table(name = "personas")
-@ToString
-public class Persona {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //
-    @Column(name = "idPersona")
-    @Getter @Setter
+public abstract class Persona {
     private Long idPersona;
 
-    @Getter @Setter
-    @Column(name = "nombre")
     private String nombre;
 
-    @Getter @Setter
-    @Column(name = "apellido")
     private String apellido;
 
-    @Getter @Setter
-    @Column(name = "genero")
-    @Enumerated(EnumType.STRING)
     private Genero genero;
 
-    @Getter @Setter
-    @Column(name = "fechaNacimiento")
-    @Temporal(TemporalType.DATE)
     private String fechaNacimiento;
 
-    @Getter @Setter
-    @Column(name = "dni")
     private Integer dni;
 
-    @Getter @Setter
-    @Column(name = "mail")
     private String mail;
 
-    @Getter @Setter
-    @Column(name = "password")
     private String password;
 
-    @Getter @Setter
-    @Column(name = "phone")
     private String phone;
 
     public Persona() {
     }
 
-    public Persona(String nombre, String apellido, Genero genero, String fechaNacimiento, Integer dni, String mail, String password, String phone) {
+    public Persona(Long idPersona, String nombre, String apellido, Genero genero, String fechaNacimiento, Integer dni, String mail, String password, String phone) {
+        this.idPersona = idPersona;
         this.nombre = nombre;
         this.apellido = apellido;
         this.genero = genero;
@@ -63,5 +39,4 @@ public class Persona {
         this.password = password;
         this.phone = phone;
     }
-
 }

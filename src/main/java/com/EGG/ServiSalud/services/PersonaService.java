@@ -2,7 +2,6 @@ package com.EGG.ServiSalud.services;
 import com.EGG.ServiSalud.entities.Enums.Genero;
 import com.EGG.ServiSalud.entities.Persona;
 import com.EGG.ServiSalud.exceptions.PersonaException;
-import com.EGG.ServiSalud.persistent.PersonaPersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
