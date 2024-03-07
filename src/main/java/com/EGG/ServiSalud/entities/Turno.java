@@ -33,18 +33,22 @@ public class Turno {
     private Date fecha;
 
     @Getter @Setter @Column(name = "horario")
-    @Enumerated(EnumType.STRING)
-    private HorarioCita horarioCita;
+    private Integer horarioCita;
 
     @Getter @Setter @Column(name = "realizado")
     private Boolean realizado;
 
-    public Turno(Long idTurno, Paciente paciente, Profesional profesional, Date fecha, HorarioCita horarioCita) {
-        this.idTurno = idTurno;
-        this.paciente = paciente;
+    @Getter @Setter @Column(name = "disponible")
+    private Boolean disponible;
+
+    public Turno() {
+    }
+
+    public Turno(Profesional profesional, Date fecha, Integer horarioCita) {
         this.profesional = profesional;
         this.fecha = fecha;
         this.horarioCita = horarioCita;
         this.realizado = false;
+        this.disponible = true;
     }
 }
