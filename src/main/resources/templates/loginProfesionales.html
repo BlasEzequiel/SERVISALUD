@@ -40,7 +40,7 @@
                                     height: 500px;
                                 }
 
-                                .selectCobertura {
+                                .selectEspecialidad {
                                     height: 52px !important;
                                     padding-top: 10px !important;
                                     padding-bottom: 10px !important;
@@ -61,10 +61,10 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form id="loginForm" class="user">
                                         <div class="form-group">
-                                            <select type="select" class="form-control form-control-user selectCobertura"
-                                                id="exampleInputEmail">
+                                            <select type="select" class="form-control form-control-user selectEspecialidad"
+                                                id="exampleInputEspecialidad">
                                                 <option value="" disabled selected>Tipo de usuario</option>
                                                 <option value="Profesional">Profesional</option>
                                                 <option value="Admin">Administrador</option>
@@ -78,10 +78,14 @@
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="exampleInputPassword" placeholder="Contraseña">
+                                            <!-- Verification Div controlled by Js -->
+                                            <div id="error-message" class="d-none text-danger small mt-2">
+                                                Correo electronico y/o contraseña incorrectos.
+                                            </div>
                                         </div>
 
                                         <div class="form-group "></div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <a href="#" id="loginButton" class="btn btn-primary btn-user btn-block">
                                             INICIAR SESION
                                         </a>
 
@@ -109,6 +113,9 @@
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Verification Div controlled by Js -->
+    <script src="js/interaccionLoginProf.js"></script>
 
 </body>
 
