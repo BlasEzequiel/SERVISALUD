@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Gestor de Profesionales</title>
+    <title>SERVISALUD - Sector Profesional</title>
 
     <!-- Custom fonts for this template -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,6 +22,7 @@
 
     <!-- Custom styles for this page -->
     <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -186,9 +187,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">Gestor de profesionales médicos</h1>
-                    <p class="mb-4">Señor administrador en esta sección usted podrá crear, editar, ver y eliminar los
-                        profesionale médicos de ServiSalud.</p>
+                    <h1 class="h3 mb-2 text-gray-800">Listado de Profesionales</h1>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
@@ -196,7 +195,7 @@
                             <button type="button" href="#" class="btn btn-primary btn-icon-split" data-toggle="modal"
                                 data-target="#myModal">
                                 <span class="icon text-white-50">
-                                    <i class="fas fa-flag"></i>
+                                    <i class="fas fa-hospital-user"></i>
                                 </span>
                                 <span class="text">Crear profesional</span>
                             </button>
@@ -214,38 +213,137 @@
                                         </div>
                                         <div class="modal-body">
                                             <form>
-                                                <div class="form-group">
-                                                    <label for="especialidad">Especialidad:</label>
-                                                    <input type="text" class="form-control" id="especialidad"
-                                                        name="especialidad" list="especialidades"
-                                                        placeholder="Ingresa la especialidad">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <input type="text" class="form-control form-control-user"
+                                                            id="FirstName" placeholder="Nombre">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control form-control-user"
+                                                            id="LastName" placeholder="Apellido">
+                                                    </div>
                                                 </div>
-
-
-                                                <datalist id="especialidades">
-                                                    <option value="Cardiología">Cardiología</option>
-                                                    <option value="Pediatría">Pediatría</option>
-                                                    <option value="Clínica">Clínica</option>
-                                                    <option value="Traumatología">Traumatología</option>
-                                                </datalist>
-
-
-
-
-                                                <div class="form-group">
-                                                    <label for="nombre">Nombre:</label>
-                                                    <input type="text" class="form-control" id="nombre" name="nombre"
-                                                        placeholder="Ingresa el nombre completo">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <select type="select"
+                                                            class="form-control form-control-user selectCobertura"
+                                                            id="exampleInputEmail" placeholder="Sexo">
+                                                            <option value="" disabled selected>Sexo</option>
+                                                            <option value="Masculino">Masculino</option>
+                                                            <option value="Femenino">Femenino</option>
+                                                            <option value="Otro">Otro</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="phone" class="form-control form-control-user"
+                                                            id="exampleRepeatPassword" placeholder="Telefono">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <input type="text" class="form-control form-control-user"
+                                                            id="DNI" placeholder="Documento">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control form-control-user"
+                                                            id="exampleRepeatPassword" placeholder="N° Matricula">
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="correo">Correo electrónico:</label>
-                                                    <input type="email" class="form-control" id="correo" name="correo"
-                                                        placeholder="Ingresa el correo electrónico">
+                                                    <select type="select" class="form-control form-control-user"
+                                                        id="Especialidad" placeholder="Especialidad">
+                                                        <option value="" disabled selected>Especialidad</option>
+                                                        <option value="Pediatria">Pediatria</option>
+                                                        <option value="Ginecologia">Ginecologia</option>
+                                                        <option value="Clinico">Clinico</option>
+                                                        <option value="Cardiología">Cardiología</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <textarea type="text" name="Description" id="Descripcion Profesion"
+                                                        required="" rows="2" class="form-control form-control-user"
+                                                        placeholder="Breve descripcion y experiencia..."></textarea>
+                                                </div>
+                                                <style>
+                                                    .arregloRadio {
+                                                        margin-right: 5px;
+                                                        margin-left: 10px;
+                                                    }
+
+                                                    .arregloRadio2 {
+                                                        margin-left: 7px;
+                                                    }
+                                                </style>
+                                                <div class="form-group">
+                                                    <label for="CoberturaMedica">Dias Laborales</label>
+                                                    <div>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Lunes">Lunes</input>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Martes">Martes
+                                                        </input>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Miercoles">Miercoles</input>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Jueves">Jueves
+                                                        </input>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Viernes">Viernes</input>
+                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
+                                                            value="Sabado">Sabado</input>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <label for="HoraEntrada">Horario de Entrada</label>
+                                                        <input type="time" class="form-control form-control-user"
+                                                            id="HoraEntrada" placeholder="Hora Ingreso">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <label for="HoraSalida">Horario de Salida</label>
+                                                        <input type="time" class="form-control form-control-user"
+                                                            id="HoraSalida" placeholder="Hora Salida">
+                                                    </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label for="correo">Teléfono:</label>
-                                                    <input type="email" class="form-control" id="telefono"
-                                                        name="telefono" placeholder="Ingresa el telefono">
+                                                    <label for="CoberturaMedica">Coberturas Medicas Asociadas</label>
+                                                    <div>
+                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
+                                                            value="NoPoseeCobertura">Sin
+                                                        Arreglo</input>
+                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
+                                                            value="OSDE">Osde
+                                                        </input>
+                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
+                                                            value="Medicus">Medicus </input>
+                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
+                                                            value="Medife">Medife
+                                                        </input>
+                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
+                                                            value="Avalian">Avalian </input>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="text" class="form-control form-control-user"
+                                                        id="PrecioConsulta" placeholder="Valor Consulta">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="email" class="form-control form-control-user"
+                                                        id="Email" placeholder="Correo Electronico">
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                                        <input type="password" class="form-control form-control-user"
+                                                            id="InputPassword" placeholder="Contraseña">
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="password" class="form-control form-control-user"
+                                                            id="RepeatPassword" placeholder="Repita contraseña">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="FotoPerfil">Cargue una foto de Perfil</label>
+                                                    <input class="form-control" type="file" id="FotoPerfil">
                                                 </div>
                                             </form>
                                         </div>
