@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class ServiSaludApplication {
 
-	public static void main(String[] args) throws PersonaException {
+	public static void main(String[] args){
 		SpringApplication.run(ServiSaludApplication.class, args);
 	}
 
