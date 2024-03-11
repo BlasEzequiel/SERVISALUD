@@ -11,4 +11,5 @@ según corresponda
 @Repository
 @Transactional
 public interface TurnoPersistent extends JpaRepository<Turno, Long> {
+
 }
