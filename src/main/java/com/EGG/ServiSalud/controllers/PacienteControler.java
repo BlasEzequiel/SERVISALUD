@@ -20,11 +20,11 @@ public class PacienteControler {
 
     @GetMapping("/registrar")//localhost:8080/paciente/registrar
     public String registrar(){
-        return "paciente_formulario.html";
+        return "register.html";
     }
 
 
-    @PostMapping("/registro")
+    @PostMapping("/registro")//localhost:8080/paciente/registro
     public String registro(@RequestParam String nombreCompleto, @RequestParam Boolean coberturaMedica,
                            @RequestParam Date fechaNacimiento, @RequestParam Boolean genero, @RequestParam String mail,
                            @RequestParam  String password, @RequestParam String phone) throws PacienteException {
