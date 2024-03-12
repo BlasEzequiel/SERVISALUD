@@ -6,37 +6,42 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Date;
+
 public abstract class Persona {
+
+    @Getter@Setter@Column(name = "numero_de_identificación")@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPersona;
 
-    private String nombre;
+    @Getter@Setter@Column(name = "nombre_completo")
+    private String nombreCompleto;
 
-    private String apellido;
 
-    private Genero genero;
+    @Getter@Setter@Column(name = "genero")
+    private Boolean genero;
 
-    private String fechaNacimiento;
+    @Temporal(TemporalType.DATE) @Column(name = "fecha_de_nacimiento") @Getter @Setter
+    private Date fechaNacimiento;
 
-    private Integer dni;
-
+    @Getter@Setter@Column(name = "email")
     private String mail;
 
+    @Getter@Setter@Column(name = "clave")
     private String password;
 
+    @Getter@Setter@Column(name = "celular")
     private String phone;
 
-    public Persona() {
-    }
 
-    public Persona(Long idPersona, String nombre, String apellido, Genero genero, String fechaNacimiento, Integer dni, String mail, String password, String phone) {
-        this.idPersona = idPersona;
-        this.nombre = nombre;
-        this.apellido = apellido;
+    public Persona(String nombreCompleto, Boolean genero, Date fechaNacimiento, String mail, String password, String phone) {
+        this.nombreCompleto = nombreCompleto;
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
-        this.dni = dni;
         this.mail = mail;
         this.password = password;
         this.phone = phone;
+    }
+
+    public Persona() {
     }
 }
