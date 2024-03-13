@@ -1,6 +1,5 @@
 package com.EGG.ServiSalud.entities;
 
-import com.EGG.ServiSalud.entities.Enums.HorarioCita;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,8 +1,5 @@
 package com.EGG.ServiSalud.services;
 
-import com.EGG.ServiSalud.entities.Enums.HorarioCita;
-import com.EGG.ServiSalud.entities.Paciente;
-import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
 import com.EGG.ServiSalud.persistent.TurnoPersistent;
@@ -10,7 +7,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

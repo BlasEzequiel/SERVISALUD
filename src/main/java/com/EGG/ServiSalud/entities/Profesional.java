@@ -1,45 +1,55 @@
 package com.EGG.ServiSalud.entities;
 
-import com.EGG.ServiSalud.entities.Enums.Especialidad;
-import com.EGG.ServiSalud.entities.Enums.Genero;
+import com.EGG.ServiSalud.Enums.Especialidad;
+import com.EGG.ServiSalud.Enums.Genero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.autoconfigure.web.WebProperties;
 
 import java.util.Date;
 import java.util.List;
+
 @Entity
-@Table(name="profesionales")
+@Table(name = "profesionales")
 public class Profesional extends Persona {
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Getter @Setter
-    @Column(name="id_profesional")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
+    @Column(name = "id_profesional")
     private Long idProfesional;
-    @Getter @Setter
-    @Column(name="matricula")
+
+    private Long idPersona;
+    @Getter
+    @Setter
+    @Column(name = "matricula")
     private int matricula;
-    @Getter @Setter
-    @Column(name="especialidad")
-private Especialidad especialidad;
-    @Getter @Setter
-    @Column(name="reputacion")
-private Double reputacion;
-    @Getter @Setter
-    @Column(name="valor_consulta_con_cs")
-private Double valorConsultaConCS;
-    @Getter @Setter
-    @Column(name="valor_consulta_sin_cs")
-private Double valorContulaSinCS;
-    @Getter @Setter
-    @Column(name="agenda_disponible")
+    @Getter
+    @Setter
+    @Column(name = "especialidad")
+    private Especialidad especialidad;
+    @Getter
+    @Setter
+    @Column(name = "reputacion")
+    private Double reputacion;
+    @Getter
+    @Setter
+    @Column(name = "valor_consulta_con_cs")
+    private Double valorConsultaConCS;
+    @Getter
+    @Setter
+    @Column(name = "valor_consulta_sin_cs")
+    private Double valorContulaSinCS;
+    @Getter
+    @Setter
+    @Column(name = "agenda_disponible")
     @ElementCollection
-private List<Date> agendaDisp;
-    @Getter @Setter
-    @Column(name="agenda_no_disponible")
+    private List<Date> agendaDisp;
+    @Getter
+    @Setter
+    @Column(name = "agenda_no_disponible")
     @ElementCollection
-private List<Date> agendaNoDisp;
+    private List<Date> agendaNoDisp;
 
     public Profesional() {
     }

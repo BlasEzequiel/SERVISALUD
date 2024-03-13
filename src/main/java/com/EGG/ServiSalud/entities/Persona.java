@@ -1,10 +1,8 @@
 package com.EGG.ServiSalud.entities;
 
-import com.EGG.ServiSalud.entities.Enums.Genero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.Date;
 

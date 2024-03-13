@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities.Enums;
+package com.EGG.ServiSalud.Enums;
 
 public enum HorarioCita {
     OCHO_CERO("8:00"),

@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities.Enums;
+package com.EGG.ServiSalud.Enums;
 
 public enum Especialidad {
     CLINICO,
