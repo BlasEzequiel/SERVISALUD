@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.services;
+/*package com.EGG.ServiSalud.services;
 
 import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
@@ -34,5 +34,5 @@ public class ProfesionalService {
 
     }
 
-}
+}*/
 

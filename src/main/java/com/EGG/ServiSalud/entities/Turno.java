@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities;
+/*package com.EGG.ServiSalud.entities;
 
 import com.EGG.ServiSalud.entities.Enums.HorarioCita;
 import jakarta.persistence.*;
@@ -52,3 +52,4 @@ public class Turno {
         this.disponible = true;
     }
 }
+*/

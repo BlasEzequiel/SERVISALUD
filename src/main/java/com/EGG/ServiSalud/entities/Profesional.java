@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities;
+/*package com.EGG.ServiSalud.entities;
 
 import com.EGG.ServiSalud.entities.Enums.Especialidad;
 import com.EGG.ServiSalud.entities.Enums.Genero;
@@ -55,4 +55,4 @@ private List<Date> agendaNoDisp;
         this.agendaDisp = agendaDisp;
         this.agendaNoDisp = agendaNoDisp;
     }
-}
+}*/
