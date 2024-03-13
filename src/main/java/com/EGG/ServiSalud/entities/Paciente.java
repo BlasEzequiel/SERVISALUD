@@ -18,27 +18,27 @@ public class Paciente extends Persona{
     private Long idPaciente;
 
 
+
     @Getter @Setter @Column(name = "cobertura_medica")
     private Boolean coberturaMedica;
 
 
-    @Column(name = "motivo_de_consulta")@Getter@Setter
-    private String motivoDeConsulta;
    /* @ElementCollection
     @CollectionTable(name = "historia_clinica", joinColumns = @JoinColumn(name = "paciente_id"))
     @Column(name = "descripcion")
     private List<String> historiaClinica;
 
     @Lob /*En este caso, imagen se mapea como un atributo grande (@Lob)*/
-   /* @Basic(fetch = FetchType.LAZY) /*se usa @Basic(fetch = FetchType.LAZY) para cargar la imagen de forma perezosa, lo que significa que la imagen se recuperará solo cuando se acceda a ella.*/
+   /* @Basic(fetch = FetchType.LAZY) /*se usa @Basic(fetch = FetchType.LAZY) para cargar la imagen de forma perezosa,
+   lo que significa que la imagen se recuperará solo cuando se acceda a ella.*/
+
     //private byte[] imagen;
 
-    public Paciente(String nombreCompleto, Boolean genero, Date fechaNacimiento, String mail, String password,
-                    String phone, Long idPaciente, Boolean coberturaMedica, String motivoDeConsulta  /*List<String> historiaClinica, byte[] imagen*/) {
-        super(nombreCompleto, genero, fechaNacimiento, mail, password, phone);
+    public Paciente(String nombre, String apellido, Boolean genero, Date fechaNacimiento, String mail, String password,
+                    String phone, Long idPaciente, Boolean coberturaMedica /*List<String> historiaClinica, byte[] imagen*/) {
+        super(nombre, apellido, genero, fechaNacimiento, mail, password, phone);
         this.idPaciente = idPaciente;
         this.coberturaMedica = coberturaMedica;
-        this.motivoDeConsulta = motivoDeConsulta;
         //this.historiaClinica = historiaClinica;
         //this.imagen = imagen;
     }
