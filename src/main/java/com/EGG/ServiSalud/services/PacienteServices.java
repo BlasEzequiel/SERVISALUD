@@ -20,19 +20,22 @@ public class PacienteServices {
     @Transactional
     //Establece que si el metodo se ejecuta sin lanzar excepciones se realiza un commit a la base de datos y // se aplican los cambios, encambio si el metodo lanza una excepcion y no es atrapada se vuelve a atras con la // transaccions, es decir se hace un rollback y no se aplica nada en la base de datos, por lo tanto podemos decir que todos //aquellos metodos que generen modificaciones permanentes en la base de datos debe ser anotados como transacionales, por ejemplos //Los metodos listar solo son de consulta entonces no generan cambios en la base de datos, pero los metodos create, update y delete si
 
-    public void CrearPaciente(String nombreCompleto, Boolean coberturaMedica, Date fechaNacimiento, Boolean genero,
-                              String mail, String password, String phone)
+    public void CrearPaciente(String nombre, String apellido, Boolean coberturaMedica, Date fechaNacimiento, String genero,
+                              String mail, String password, String phone, Long dni)
             throws PacienteException {
-        validacionCrear(nombreCompleto, fechaNacimiento, genero, coberturaMedica, mail, password, phone);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
+        validacionCrear(nombre, fechaNacimiento, genero, coberturaMedica, mail, password, phone, dni);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
 
 
         Paciente paciente = new Paciente();
-        paciente.setNombreCompleto(nombreCompleto);
+        paciente.setNombre(nombre);
+        paciente.setDni(dni);
+        paciente.setApellido(apellido);
         paciente.setFechaNacimiento(fechaNacimiento);//cambiamos fechaNacimiento y ponemos new Date() para que se instancie con la fecha del momento en que el objeto se crea
         paciente.setGenero(genero); //Con el usuarioPaciente creado debemos llamar el repositorio para persistir este objeto,
         paciente.setMail(mail);
         paciente.setPassword(password);
         paciente.setPhone(phone);
+        paciente.setCoberturaMedica(coberturaMedica);
         // paciente.setHistoriaClinica(historiaClinica);
        // paciente.setImagen(imagen);
 
@@ -92,7 +95,8 @@ public class PacienteServices {
 
 
 
-    private void validacionCrear(String nombreCompleto, Date fechaNacimiento, Boolean genero, Boolean coberturaMedica, String mail, String password, String phone) throws PacienteException {
+    private void validacionCrear(String nombreCompleto, Date fechaNacimiento, String genero, Boolean coberturaMedica,
+                                 String mail, String password, String phone, Long dni) throws PacienteException {
         if (nombreCompleto.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
             throw new PacienteException("El nombre no puede estar vacio");
         }
@@ -100,7 +104,7 @@ public class PacienteServices {
             throw new PacienteException("La fecha de nacimiento no puede estar vacía");
         }
 
-        if (genero == null) {
+        if (genero.isEmpty()) {
             throw new PacienteException("El género no puede estar vacío");
         }
         if (coberturaMedica == null) {
@@ -113,6 +117,9 @@ public class PacienteServices {
             throw new PacienteException("El password no puede estar vacío");
         }
         if (phone == null) {
+            throw new PacienteException("El phone no puede estar vacío");
+        }
+        if (dni == null) {
             throw new PacienteException("El phone no puede estar vacío");
         }
 

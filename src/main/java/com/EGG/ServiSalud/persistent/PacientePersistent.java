@@ -7,5 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PacientePersistent extends JpaRepository<Paciente, Long> {
 
 
+    //Obtener paciente de acuerdo a DNI y al nombre
+
+
+
+
 
 }
