@@ -5,18 +5,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
-
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Persona {
 
     @Getter@Setter@Column(name = "numero_de_identificación")@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPersona;
 
-    @Getter@Setter@Column(name = "nombre_completo")
-    private String nombreCompleto;
+    @Getter @Setter @Column(name = "numero_de_identifiacion_nacional")
+    private Long dni;
+
+    @Getter@Setter@Column(name = "nombre")
+    private String nombre;
+
+    @Getter @Setter @Column(name = "apellido")
+    private String apellido;
 
 
     @Getter@Setter@Column(name = "genero")
-    private Boolean genero;
+    private String genero;
 
     @Temporal(TemporalType.DATE) @Column(name = "fecha_de_nacimiento") @Getter @Setter
     private Date fechaNacimiento;
@@ -31,8 +38,10 @@ public abstract class Persona {
     private String phone;
 
 
-    public Persona(String nombreCompleto, Boolean genero, Date fechaNacimiento, String mail, String password, String phone) {
-        this.nombreCompleto = nombreCompleto;
+    public Persona(String nombre, String apellido, String genero, Date fechaNacimiento, String mail,
+                   String password, String phone) {
+        this.nombre = nombre;
+        this.apellido = apellido;
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
         this.mail = mail;

@@ -17,24 +17,37 @@ public class PacienteControler {
     @Autowired
     private PacienteServices PacienteServicio;
 
-
-    @GetMapping("/registrar")//localhost:8080/paciente/registrar
-    public String registrar(){
+    @GetMapping("/registrar")//localhost:8080/serviSalud/registrar
+    public String registrar() {
         return "paciente_formulario.html";
     }
 
-
-    @PostMapping("/registro")
+    /*@PostMapping("/registro")
     public String registro(@RequestParam String nombreCompleto, @RequestParam Boolean coberturaMedica,
                            @RequestParam Date fechaNacimiento, @RequestParam Boolean genero, @RequestParam String mail,
                            @RequestParam  String password, @RequestParam String phone) throws PacienteException {
-
         PacienteServicio.CrearPaciente(nombreCompleto, coberturaMedica, fechaNacimiento, genero, mail, password, phone);
-
-
-
         //System.out.println("Nombre: " + nombre);
         return "paciente_formulario.html";
+    }*/
+    @GetMapping("/home")//localhost:8080/serviSalud/home
+    public String home() {
+        return "index.html";
     }
 
+    @GetMapping("/crear_paciente")//localhost:8080/serviSalud/crear_paciente
+    public String crear_paciente() {
+        return "register.html";
+    }
+
+    @PostMapping("/crear_paciente")
+    public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam Boolean coberturaMedica,
+                           @RequestParam Date fechaNacimiento, @RequestParam String genero,
+                           @RequestParam String mail, @RequestParam String password,
+                           @RequestParam String phone , @RequestParam Long dni) throws PacienteException {
+        PacienteServicio.CrearPaciente(nombre, apellido, coberturaMedica, fechaNacimiento, genero, mail, password, phone, dni);
+        //System.out.println("Nombre: " + nombre);
+        return "register.html";
+
+    }
 }

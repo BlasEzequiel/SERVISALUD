@@ -4,7 +4,7 @@ import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
-import com.EGG.ServiSalud.services.TurnoService;
+//import com.EGG.ServiSalud.services.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 /*Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para operar
 con la vista del usuario diseñada para la gestión de pacientes y profesionales (guardar/modificar, listar,
-dar de baja, etc).*/
+dar de baja, etc).
 @Controller
 @RequestMapping("/turnos") //localhost:8080/ServiSalud/turno
 public class TurnoController {
@@ -59,3 +59,4 @@ public class TurnoController {
         }
     }
 }
+*/
