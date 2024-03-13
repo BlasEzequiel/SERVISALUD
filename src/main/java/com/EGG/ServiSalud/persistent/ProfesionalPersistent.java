@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.persistent;
+/*package com.EGG.ServiSalud.persistent;
 
 import com.EGG.ServiSalud.entities.Profesional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,3 +13,4 @@ public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
     public void actualizarNombreProfesional(String nombreProfesional, Long idProfesional);
 
 }
+*/

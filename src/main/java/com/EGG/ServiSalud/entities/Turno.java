@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities;
+/*package com.EGG.ServiSalud.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -51,3 +51,4 @@ public class Turno {
         this.disponible = true;
     }
 }
+*/

@@ -1,4 +1,4 @@
-package com.EGG.ServiSalud.entities;
+/*package com.EGG.ServiSalud.entities;
 
 import com.EGG.ServiSalud.Enums.Especialidad;
 import com.EGG.ServiSalud.Enums.Genero;
@@ -65,4 +65,4 @@ public class Profesional extends Persona {
         this.agendaDisp = agendaDisp;
         this.agendaNoDisp = agendaNoDisp;
     }
-}
+}*/
