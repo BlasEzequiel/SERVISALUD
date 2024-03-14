@@ -76,7 +76,7 @@ public class PacienteServices implements UserDetailsService {
     public Paciente buscarPacientePorEmail(String email) {
         return PacienteRepository.buscarPorEmail(email);
     }
-
+    //
     public Paciente validarInicioSesion(String email, String password) throws PacienteException {
         Paciente paciente = PacienteRepository.buscarPorEmail(email);
         if (paciente == null) {
