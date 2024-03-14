@@ -1,38 +1,40 @@
-package com.EGG.ServiSalud.services;
+/*package com.EGG.ServiSalud.services;
 
-import com.EGG.ServiSalud.entities.Enums.HorarioCita;
-import com.EGG.ServiSalud.entities.Paciente;
-import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
-import com.EGG.ServiSalud.persistent.TurnoPersistent;
+//import com.EGG.ServiSalud.persistent.TurnoPersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+<<<<<<< HEAD
 /*Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
 administrar (consulta, creación, modificación y dar de baja).*/
+/*
+=======
+//Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
+administrar (consulta, creación, modificación y dar de baja).
+>>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
 @Service
 public class TurnoService {
     @Autowired
     private TurnoPersistent turnoPer;
 
-    /*Crear turno*/
+    //Crear turno
     @Transactional
     public Turno crearTurno(Turno turno) {
         return turnoPer.save(turno);
     }
 
-    /*Obtener todos los turnos*/
+    //Obtener todos los turnos
     public List<Turno> obtenerTurnos(){
         return turnoPer.findAll();
     }
 
-    /*Obtener turno por ID*/
+    //Obtener turno por ID
     public Optional<Turno> obtenerTurnoID(Long id) throws TurnoException{
         Optional<Turno> turno = turnoPer.findById(id);
         if(turno.isPresent()){
@@ -42,7 +44,7 @@ public class TurnoService {
         }
     }
 
-    /*Obtener turno por Horario*/
+    //Obtener turno por Horario
     public Optional<Turno> obtenerTurnoPorHorario(Integer horario) throws TurnoException {
         Optional<Turno> turno = turnoPer.findByHorario(horario);
         if(turno.isPresent()){
@@ -52,19 +54,19 @@ public class TurnoService {
         }
     }
 
-    /*Agregar Paciente a turno*/
+    //Agregar Paciente a turno
     @Transactional
     public void completarTurno(Turno turno, Long idPaciente){
         turnoPer.actualizarTurno(turno.getIdTurno(), idPaciente, turno.getDisponible() );
     }
 
-    /*Cambiar el estado de realizado del turno*/
+    //Cambiar el estado de realizado del turno
     public void finalizarTurno(Turno turno){
         turnoPer.cambiarEstadoDeRealizado(turno.getRealizado(), turno.getIdTurno());
     }
+<<<<<<< HEAD
+=======
 
-
-
-
-
+>>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
 }
+*/

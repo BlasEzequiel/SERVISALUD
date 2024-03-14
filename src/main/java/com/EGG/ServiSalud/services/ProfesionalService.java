@@ -18,24 +18,22 @@ public class ProfesionalService {
     public Profesional createProfesional(Profesional profesional) {
         return perRepositorio.save(profesional);
     }
-    public Optional<Profesional> buscarPorId(Long idProfesional){
+
+    public Optional<Profesional> buscarPorId(Long idProfesional) {
         return perRepositorio.findById(idProfesional);
     }
-    public List<Profesional> devolverProfesionales(){
 
+    public List<Profesional> listarProfesionales() {
         return perRepositorio.findAll();
     }
 
-    public void cambiarNombreProfesional(Long idProfesional, Profesional profesional) {
-        perRepositorio.actualizarNombreProfesional(profesional.getNombreCompleto(), idProfesional);
-    }
     @Transactional
     public void deletePersona(Long id) {
         perRepositorio.deleteById(id);
 
     }
     public Profesional buscarPorEmail(String email){
-        perRepositorio.obtenerIdPersona(email);
+        return perRepositorio.obtenerIdPersona(email);
     }
 }
 

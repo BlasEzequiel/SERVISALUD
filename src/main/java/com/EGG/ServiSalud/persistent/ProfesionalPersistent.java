@@ -5,9 +5,10 @@ import com.EGG.ServiSalud.entities.Profesional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
-
+@Repository
 public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
 //    @Query("SELECT * FROM profesionales WHERE especialidad= :especialidad")
 //    Optional<Profesional> findById(String especialidad);
@@ -16,9 +17,8 @@ public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
     public void actualizarNombreProfesional(String nombreProfesional, Long idProfesional);
 
     @Query("SELECT p FROM persona WHERE p.email= :email")
-    public Persona obtenerIdPersona(@Param("email")String email);
+    public Profesional obtenerIdPersona(@Param("email")String email);
 
 //    @Query("SELECT p FROM profesional WHERE p.id_persona= :id")
 //    public Profesional obtenerProfesionalPorIdPersona(@Param("id")Long id);
-
 }

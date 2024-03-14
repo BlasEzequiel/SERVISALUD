@@ -24,28 +24,13 @@ public class ProfesionalController {
         return "loginProfesionales.html";
     }
     @PostMapping("/login_profesionales")
-    public String validarProfesional(@RequestParam(required = false) String email, @RequestParam(required = false) String password) {
-        validarDatos(nombre, apellido, genero, fechaNacimiento, phone, email, password);
+    public String validarProfesional(@RequestParam(required = false) String email, @RequestParam(required = false) String password) throws ProfesionalException {
+        validarDatos(email, password);
         Profesional profesional = new Profesional();
 
         return "index.html";
     }
-    public void validarDatos(String nombre, String apellido, Boolean genero, Date fechaNacimiento, String phone, String email, String password) throws ProfesionalException {
-        if(nombre.isEmpty()){
-            throw new ProfesionalException("El nombre no puede estar vacío.");
-        }
-        if(apellido.isEmpty()){
-            throw new ProfesionalException("El apellido no puede estar vacío.");
-        }
-        if(genero==null){
-            throw new ProfesionalException("El género no puede estar vacío.");
-        }
-        if(fechaNacimiento==null){
-            throw new ProfesionalException("La fecha de nacimiento no puede estar vacía.");
-        }
-        if(phone.isEmpty()){
-            throw new ProfesionalException("El teléfono no puede estar vacío.");
-        }
+    public void validarDatos( String email, String password) throws ProfesionalException {
         if(email.isEmpty()){
             throw new ProfesionalException("El e-mail no puede estar vacío.");
         }
