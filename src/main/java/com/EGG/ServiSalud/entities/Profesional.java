@@ -19,7 +19,7 @@ public class Profesional extends Persona {
     private Long idProfesional;
     @Getter @Setter
     @Column(name="matricula")
-    private int matricula;
+    private Integer matricula;
     @Getter @Setter
     @Column(name="especialidad")
 private Especialidad especialidad;
@@ -44,7 +44,9 @@ private List<Date> agendaNoDisp;
     public Profesional() {
     }
 
-    public Profesional(Long idPersona, String nombre, String apellido, Genero genero, String fechaNacimiento, Integer dni, String mail, String password, String phone, Long idProfesional, int matricula, Especialidad especialidad, Double reputacion, Double valorConsultaConCS, Double valorContulaSinCS, List<Date> agendaDisp, List<Date> agendaNoDisp) {
+
+
+    public Profesional(Long idPersona, String nombre, String apellido, Genero genero, String fechaNacimiento, Integer dni, String mail, String password, String phone, Long idProfesional, Integer matricula, Especialidad especialidad, Double reputacion, Double valorConsultaConCS, Double valorContulaSinCS, List<Date> agendaDisp, List<Date> agendaNoDisp) {
         super(idPersona, nombre, apellido, genero, fechaNacimiento, dni, mail, password, phone);
         this.idProfesional = idProfesional;
         this.matricula = matricula;

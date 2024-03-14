@@ -22,17 +22,20 @@ public class ProfesionalService {
         return perRepositorio.findById(idProfesional);
     }
     public List<Profesional> devolverProfesionales(){
+
         return perRepositorio.findAll();
     }
 
     public void cambiarNombreProfesional(Long idProfesional, Profesional profesional) {
-        perRepositorio.actualizarNombreProfesional(profesional.getNombreCompleto, idProfesional);
+        perRepositorio.actualizarNombreProfesional(profesional.getNombreCompleto(), idProfesional);
     }
     @Transactional
     public void deletePersona(Long id) {
         perRepositorio.deleteById(id);
 
     }
-
+    public Profesional buscarPorEmail(String email){
+        perRepositorio.obtenerIdPersona(email);
+    }
 }
 
