@@ -2,7 +2,6 @@ package com.EGG.ServiSalud.controllers;
 
 import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Profesional;
-import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
 //import com.EGG.ServiSalud.services.TurnoService;
 import org.springframework.beans.factory.annotation.Autowired;

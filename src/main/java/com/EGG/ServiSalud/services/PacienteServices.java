@@ -1,31 +1,38 @@
 package com.EGG.ServiSalud.services;
 
+import com.EGG.ServiSalud.Enums.Rol;
 import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.persistent.PacientePersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-public class PacienteServices {
+public class PacienteServices implements UserDetailsService {
     @Autowired
     //indica al servidor de aplicaciones que esta variable va a ser inicializada por él, esto es lo que se conoce como inyección de dependencias
     private PacientePersistent PacienteRepository; //Generamos una instancia del PacienteRepository, Metodo create para settear los datos del paciente y crearlos en la base de datos
 
-
+    //Establece que si el metodo se ejecuta sin lanzar excepciones se realiza un commit a la base de datos y
+    // se aplican los cambios, encambio si el metodo lanza una excepcion y no es atrapada se vuelve a atras con la
+    // transaccions, es decir se hace un rollback y no se aplica nada en la base de datos, por lo tanto podemos decir que todos
+    // aquellos metodos que generen modificaciones permanentes en la base de datos debe ser anotados como transacionales, por ejemplos
+    // Los metodos listar solo son de consulta entonces no generan cambios en la base de datos, pero los metodos create, update y delete si
     @Transactional
-    //Establece que si el metodo se ejecuta sin lanzar excepciones se realiza un commit a la base de datos y // se aplican los cambios, encambio si el metodo lanza una excepcion y no es atrapada se vuelve a atras con la // transaccions, es decir se hace un rollback y no se aplica nada en la base de datos, por lo tanto podemos decir que todos //aquellos metodos que generen modificaciones permanentes en la base de datos debe ser anotados como transacionales, por ejemplos //Los metodos listar solo son de consulta entonces no generan cambios en la base de datos, pero los metodos create, update y delete si
-
-    public void CrearPaciente(String nombre, String apellido, Boolean coberturaMedica, Date fechaNacimiento, String genero,
-                              String mail, String password, String phone, Long dni)
-            throws PacienteException {
-        validacionCrear(nombre, fechaNacimiento, genero, coberturaMedica, mail, password, phone, dni);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
-
-
+    public void CrearPaciente(String nombre, String apellido, String coberturaMedica, Date fechaNacimiento,
+                              String genero, String mail, String password, String password2, String phone, Long dni) throws PacienteException {
+        validacionCrear(nombre, apellido, fechaNacimiento, genero, coberturaMedica, mail, password, password2, phone, dni);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
         Paciente paciente = new Paciente();
         paciente.setNombre(nombre);
         paciente.setDni(dni);
@@ -36,23 +43,56 @@ public class PacienteServices {
         paciente.setPassword(password);
         paciente.setPhone(phone);
         paciente.setCoberturaMedica(coberturaMedica);
+        paciente.setRol(Rol.PACIENTE);
         // paciente.setHistoriaClinica(historiaClinica);
-       // paciente.setImagen(imagen);
+        // paciente.setImagen(imagen);
+
+        // con todos los anteriores atributos completos, llamamos al metodo save para que lo llame y lo persista en la base de datos
+        PacienteRepository.save(paciente); //Este metodo save recibe una entidad por parametro y la guarda, la persiste en la base de datos
+    }
+    @Transactional
+    public void CrearPaciente(String nombre, String apellido, String coberturaMedica,
+                              String mail, String password, String password2) throws PacienteException {
+        validacionCrear(nombre, apellido, coberturaMedica, mail, password, password2);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
+        Paciente paciente = new Paciente();
+        paciente.setNombre(nombre);
+        paciente.setApellido(apellido);
+        paciente.setMail(mail);
+        paciente.setPassword(password);
+        paciente.setCoberturaMedica(coberturaMedica);
+        paciente.setRol(Rol.PACIENTE);
+        // paciente.setHistoriaClinica(historiaClinica);
+        // paciente.setImagen(imagen);
 
         // con todos los anteriores atributos completos, llamamos al metodo save para que lo llame y lo persista en la base de datos
         PacienteRepository.save(paciente); //Este metodo save recibe una entidad por parametro y la guarda, la persiste en la base de datos
     }
 
-
-
     //Metodo Read
-    public List<Paciente> ListarPacientes(){//Este metodo no recibe parametros
+    public List<Paciente> ListarPacientes() {//Este metodo no recibe parametros
         return PacienteRepository.findAll();
     }
 
+    public Paciente buscarPacientePorEmail(String email) {
+        return PacienteRepository.buscarPorEmail(email);
+    }
 
+    public Paciente validarInicioSesion(String email, String password) throws PacienteException {
+        Paciente paciente = PacienteRepository.buscarPorEmail(email);
+        if (paciente == null) {
+            throw new PacienteException("El mail ingresado no es correcto");
+        }
+        if (!paciente.getPassword().equals(password)) {
+            throw new PacienteException("La contraseña ingresada no es correcta.");
+        }
+        return paciente;
+    }
 
-/*
+    public Optional<Paciente> buscarPorId(Long id) {
+        return PacienteRepository.findById(id);
+    }
+
+    /*
     public void UpdatePaciente(Long idPaciente, String nombreCompleto, Boolean coberturaMedica, Date fechaNacimiento, Boolean genero, String mail, String password, String phone){
 
         Paciente RespuestaPaciente = PacienteRepository.findById(idPaciente).get();
@@ -92,39 +132,72 @@ public class PacienteServices {
 
 
 */
-
-
-
-    private void validacionCrear(String nombreCompleto, Date fechaNacimiento, String genero, Boolean coberturaMedica,
-                                 String mail, String password, String phone, Long dni) throws PacienteException {
-        if (nombreCompleto.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
-            throw new PacienteException("El nombre no puede estar vacio");
+    private void validacionCrear(String nombre, String apellido, Date fechaNacimiento, String genero, String coberturaMedica,
+                                 String mail, String password, String password2, String phone, Long dni) throws PacienteException {
+        if (nombre.isEmpty()) {
+            throw new PacienteException("El nombre no puede estar vacío.");
+        }
+        if (apellido.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
+            throw new PacienteException("El apellido no puede estar vacío.");
         }
         if (fechaNacimiento == null) {
-            throw new PacienteException("La fecha de nacimiento no puede estar vacía");
+            throw new PacienteException("La fecha de nacimiento no puede estar vacía.");
         }
-
         if (genero.isEmpty()) {
-            throw new PacienteException("El género no puede estar vacío");
+            throw new PacienteException("Debe seleccionar un género.");
         }
-        if (coberturaMedica == null) {
-            throw new PacienteException("El cobertura medica no puede estar vacío");
+        if (coberturaMedica.isEmpty()) {
+            throw new PacienteException("La cobertura medica no puede estar vacía.");
         }
         if (mail == null) {
-            throw new PacienteException("El mail no puede estar vacío");
+            throw new PacienteException("El mail no puede estar vacío.");
         }
-        if (password == null) {
-            throw new PacienteException("El password no puede estar vacío");
+        if (password == null || password.length() <= 5) {
+            throw new PacienteException("El password no puede estar vacío y debe tener 5 dígitos o más.");
+        }
+        if (!password.equals(password2)) {
+            throw new PacienteException("Las contraseñas ingresadas deben ser iguales.");
         }
         if (phone == null) {
-            throw new PacienteException("El phone no puede estar vacío");
+            throw new PacienteException("El campo teléfono es obligatorio.");
         }
         if (dni == null) {
-            throw new PacienteException("El phone no puede estar vacío");
+            throw new PacienteException("El campo dni es obligatorio.");
+        }
+    } // Fin VALIDARDATOS
+    private void validacionCrear(String nombre, String apellido, String coberturaMedica,
+                                 String mail, String password, String password2) throws PacienteException {
+        if (nombre.isEmpty()) {
+            throw new PacienteException("El nombre no puede estar vacío.");
+        }
+        if (apellido.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
+            throw new PacienteException("El apellido no puede estar vacío.");
         }
 
+        if (coberturaMedica.isEmpty()) {
+            throw new PacienteException("La cobertura medica no puede estar vacía.");
+        }
+        if (mail == null) {
+            throw new PacienteException("El mail no puede estar vacío.");
+        }
+        if (password == null || password.length() <= 5) {
+            throw new PacienteException("El password no puede estar vacío y debe tener 5 dígitos o más.");
+        }
+        if (!password.equals(password2)) {
+            throw new PacienteException("Las contraseñas ingresadas deben ser iguales.");
+        }
 
-
-
+    } // Fin VALIDARDATOS
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Paciente paciente = PacienteRepository.buscarPorEmail(email);
+        if (paciente != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + paciente.getRol().toString());
+            permisos.add(p);
+            return new User(paciente.getMail(), paciente.getPassword(), permisos);
+        } else {
+            return null;
+        }
     }
 }

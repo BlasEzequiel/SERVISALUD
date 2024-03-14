@@ -1,53 +1,84 @@
 package com.EGG.ServiSalud.controllers;
 
+import com.EGG.ServiSalud.Enums.CoberturaMedica;
+import com.EGG.ServiSalud.Enums.Genero;
+import com.EGG.ServiSalud.entities.Paciente;
+import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.services.PacienteServices;
+import com.EGG.ServiSalud.services.ProfesionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/paciente")//localhost:8080/serviSalud/paciente
 public class PacienteControler {
     @Autowired
-    private PacienteServices PacienteServicio;
+    private PacienteServices pacienteServicio;
+    @Autowired
+    private ProfesionalService profService;
 
-    @GetMapping("/registrar")//localhost:8080/serviSalud/registrar
-    public String registrar() {
-        return "paciente_formulario.html";
-    }
-
-    /*@PostMapping("/registro")
-    public String registro(@RequestParam String nombreCompleto, @RequestParam Boolean coberturaMedica,
-                           @RequestParam Date fechaNacimiento, @RequestParam Boolean genero, @RequestParam String mail,
-                           @RequestParam  String password, @RequestParam String phone) throws PacienteException {
-        PacienteServicio.CrearPaciente(nombreCompleto, coberturaMedica, fechaNacimiento, genero, mail, password, phone);
-        //System.out.println("Nombre: " + nombre);
-        return "paciente_formulario.html";
-    }*/
-    @GetMapping("/home")//localhost:8080/serviSalud/home
-    public String home() {
-        return "index.html";
-    }
-
-    @GetMapping("/crear_paciente")//localhost:8080/serviSalud/crear_paciente
-    public String crear_paciente() {
+    @GetMapping("/register")//localhost:8080/serviSalud/register
+    public String registrar(ModelMap model) {
+        model.addAttribute("generos", Genero.values());
+        model.addAttribute("coberturas", CoberturaMedica.values());
         return "register.html";
+    } //Fin GETMAPPING REGISTER
+    @PostMapping("/register")
+    public String registro(@RequestParam String nombre, @RequestParam String apellido,
+                           @RequestParam String coberturaMedica, @RequestParam Date fechaNacimiento,
+                           @RequestParam String genero, @RequestParam String mail,
+                           @RequestParam String password,@RequestParam String password2,
+                           @RequestParam String phone, @RequestParam Long dni,
+                           ModelMap model) {
+        try {
+            pacienteServicio.CrearPaciente(nombre, apellido, coberturaMedica, mail, password,password2);
+            model.put("exito", "El paciente ha sido creado con éxito, por favor ingrese sus datos para acceder");
+            return "/login";
+
+        } catch (PacienteException ex) {
+            model.put("error", ex.getMessage());
+            return "/register";
+        }
+    } //Fin POSTMAPPING REGISTER
+
+    @GetMapping("/login")
+    public String login(){
+        return "login.html";
     }
 
-    @PostMapping("/crear_paciente")
-    public String registro(@RequestParam String nombre, @RequestParam String apellido, @RequestParam Boolean coberturaMedica,
-                           @RequestParam Date fechaNacimiento, @RequestParam String genero,
-                           @RequestParam String mail, @RequestParam String password,
-                           @RequestParam String phone , @RequestParam Long dni) throws PacienteException {
-        PacienteServicio.CrearPaciente(nombre, apellido, coberturaMedica, fechaNacimiento, genero, mail, password, phone, dni);
-        //System.out.println("Nombre: " + nombre);
-        return "register.html";
-
+    @PostMapping("/login")
+    public String logearPaciente(@RequestParam String email,
+                                 @RequestParam String password, ModelMap model){
+        try {
+            pacienteServicio.validarInicioSesion(email,password);
+            return "redirect:../index_paciente";
+        }catch (PacienteException ex){
+            model.put("error", ex.getMessage());
+            return "login.html";
+        }
     }
+    @GetMapping("/index_paciente/{id}")
+    public String indexPaciente(@PathVariable Long id, ModelMap model){
+        Optional<Paciente> optional = pacienteServicio.buscarPorId(id);
+        if(optional.isPresent()){
+            Paciente paciente = optional.get();
+            model.put("paciente", paciente);
+        }
+        List<Profesional> profesionales = profService.listarProfesionales();
+        model.addAttribute("profesionales", profesionales);
+        return "indexUsuario.html";
+    }
+
+    @GetMapping("/crear_turno/{id}")
+    public String crearTurno(@PathVariable Long id, ModelMap model){
+        return "";
+    }
+
 }

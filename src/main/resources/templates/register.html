@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
@@ -38,19 +38,19 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Crear Usuario</h1>
                             </div>
-                            <form class="user">
+                            <form th:action="@{/register}" method="POST" class="user">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                        <input name="nombre" type="text" class="form-control form-control-user" id="exampleFirstName"
                                             placeholder="Nombre">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                        <input name="apellido" type="text" class="form-control form-control-user" id="exampleLastName"
                                             placeholder="Apellido">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input name="mail" type="email" class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Correo Electronico">
                                 </div>
                                 <style>
@@ -63,10 +63,10 @@
                                     }
                                 </style>
                                 <div class="form-group">
-                                    <select type="select" class="form-control form-control-user selectCobertura"
+                                    <select name="coberturaMedica" type="select" class="form-control form-control-user selectCobertura"
                                         id="CoberturaMedica" placeholder="Cobertura Medica">
                                         <option value="" disabled selected>Cobertura Medica</option>
-                                        <option name="NoTengo" value="NoPoseeCobertura">No tengo</option>
+                                        <option value="NoPoseeCobertura">No tengo</option>
                                         <option value="OSDE">Osde</option>
                                         <option value="Medicus">Medicus</option>
                                         <option value="Medife">Medife</option>
@@ -75,11 +75,11 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input name="password" type="password" class="form-control form-control-user"
                                             id="exampleInputPassword" placeholder="Contraseña">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="password" class="form-control form-control-user"
+                                        <input name="password2" type="password" class="form-control form-control-user"
                                             id="exampleRepeatPassword" placeholder="Repita contraseña">
                                     </div>
 
@@ -88,7 +88,7 @@
                                     <label for="FotoPerfil">Cargue una foto de Perfil</label>
                                     <input class="form-control rounded-pill" type="file" id="FotoPerfil">
                                 </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <a class="btn btn-primary btn-user btn-block">
                                     Registrar usuario
                                 </a>
 
@@ -99,6 +99,7 @@
                                 <div class="text-center">
                                     <a class="small" href="login.html">Ya tienes cuenta?</a>
                                 </div>
+                            </form>
                         </div>
                     </div>
                 </div>
