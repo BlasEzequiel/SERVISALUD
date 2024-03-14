@@ -1,8 +1,5 @@
-package com.EGG.ServiSalud.services;
+/*package com.EGG.ServiSalud.services;
 
-import com.EGG.ServiSalud.entities.Enums.HorarioCita;
-import com.EGG.ServiSalud.entities.Paciente;
-import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
 //import com.EGG.ServiSalud.persistent.TurnoPersistent;
@@ -10,13 +7,17 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+<<<<<<< HEAD
 /*Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
 administrar (consulta, creación, modificación y dar de baja).*/
 /*
+=======
+//Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
+administrar (consulta, creación, modificación y dar de baja).
+>>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
 @Service
 public class TurnoService {
     @Autowired
@@ -63,5 +64,9 @@ public class TurnoService {
     public void finalizarTurno(Turno turno){
         turnoPer.cambiarEstadoDeRealizado(turno.getRealizado(), turno.getIdTurno());
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
 }
 */

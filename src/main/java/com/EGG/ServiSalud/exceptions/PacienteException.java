@@ -4,10 +4,10 @@ public class PacienteException extends Exception {
 
     public PacienteException() {
     }
-    public PacienteException(String msg){
+
+    public PacienteException(String msg) {
         super(msg);
     }
-
 
 
 }

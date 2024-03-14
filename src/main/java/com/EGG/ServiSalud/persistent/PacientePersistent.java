@@ -1,11 +1,14 @@
 package com.EGG.ServiSalud.persistent;
 
 import com.EGG.ServiSalud.entities.Paciente;
-import com.EGG.ServiSalud.entities.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+@Repository
 public interface PacientePersistent extends JpaRepository<Paciente, Long> {
-
-
-
+    @Query("SELECT p FROM Paciente p WHERE p.mail = :mail")
+    Paciente buscarPorEmail(@Param("mail") String mail);
 }
