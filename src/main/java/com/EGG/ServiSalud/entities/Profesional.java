@@ -26,6 +26,7 @@ public class Profesional extends Persona {
     private List<Date> horariosDisponibles;
     @Column(name = "agenda_no_disponible")
     private List<Date> agendaNoDisp;
+    @Enumerated(EnumType.STRING)
     private Rol rol;
 
     public Profesional() {

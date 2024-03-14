@@ -1,6 +1,7 @@
 package com.EGG.ServiSalud.services;
 
 import com.EGG.ServiSalud.entities.Profesional;
+import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +28,25 @@ public class ProfesionalService {
         return perRepositorio.findAll();
     }
 
+    public void validarInicioDeSesion(String email, String password) throws ProfesionalException {
+        Optional<Profesional> optional= perRepositorio.buscarPorMail(email);
+        if (optional.isPresent()){
+            Profesional profesional = optional.get();
+            if (!profesional.getPassword().equals(password)){
+                throw new ProfesionalException("La contraseña ingresada no es correcta.");
+            }
+        } else {
+            throw new ProfesionalException("El mail ingresado no es correcto.");
+        }
+
+    }
     @Transactional
     public void deletePersona(Long id) {
         perRepositorio.deleteById(id);
 
     }
-    public Profesional buscarPorEmail(String email){
-        return perRepositorio.obtenerIdPersona(email);
+    public Optional<Profesional> buscarPorEmail(String email){
+        return perRepositorio.buscarPorMail(email);
     }
 }
 

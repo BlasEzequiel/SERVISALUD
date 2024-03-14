@@ -16,8 +16,8 @@ public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
     @Query("INSERT INTO profesionales(nombre_completo) VALUES (:nombreProfesional) WHERE id_profesional=:idProfesional")
     public void actualizarNombreProfesional(String nombreProfesional, Long idProfesional);
 
-    @Query("SELECT p FROM persona WHERE p.email= :email")
-    public Profesional obtenerIdPersona(@Param("email")String email);
+    @Query("SELECT p FROM Profesional p WHERE p.mail= :mail")
+    Optional<Profesional> buscarPorMail(@Param("mail")String mail);
 
 //    @Query("SELECT p FROM profesional WHERE p.id_persona= :id")
 //    public Profesional obtenerProfesionalPorIdPersona(@Param("id")Long id);
