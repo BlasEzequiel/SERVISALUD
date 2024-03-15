@@ -13,9 +13,6 @@ public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
 //    @Query("SELECT * FROM profesionales WHERE especialidad= :especialidad")
 //    Optional<Profesional> findById(String especialidad);
 
-    @Query("INSERT INTO profesionales(nombre_completo) VALUES (:nombreProfesional) WHERE id_profesional=:idProfesional")
-    public void actualizarNombreProfesional(String nombreProfesional, Long idProfesional);
-
     @Query("SELECT p FROM Profesional p WHERE p.mail= :mail")
     Optional<Profesional> buscarPorMail(@Param("mail")String mail);
 

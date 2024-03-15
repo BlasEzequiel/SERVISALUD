@@ -5,7 +5,6 @@ import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.services.ProfesionalService;
-import jdk.nashorn.internal.ir.IfNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
