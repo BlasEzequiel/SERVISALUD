@@ -1,5 +1,6 @@
 package com.EGG.ServiSalud.entities;
 
+import com.EGG.ServiSalud.Enums.Genero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,8 @@ public abstract class Persona {
     private Long dni;
     private String nombre;
     private String apellido;
-    private String genero;
+    @Enumerated(EnumType.STRING)
+    private Genero genero;
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_de_nacimiento")
     private Date fechaNacimiento;

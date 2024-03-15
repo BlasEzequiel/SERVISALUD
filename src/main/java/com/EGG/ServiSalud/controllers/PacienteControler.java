@@ -8,10 +8,12 @@ import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.services.PacienteServices;
 import com.EGG.ServiSalud.services.ProfesionalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,19 +33,23 @@ public class PacienteControler {
         return "register.html";
     } //Fin GETMAPPING REGISTER
     @PostMapping("/register")
-    public String registro(@RequestParam String nombre, @RequestParam String apellido,
-                           @RequestParam String coberturaMedica, @RequestParam Date fechaNacimiento,
-                           @RequestParam String genero, @RequestParam String mail,
-                           @RequestParam String password,@RequestParam String password2,
-                           @RequestParam String phone, @RequestParam Long dni,
+    public String registro(@RequestParam(required=false) String nombre, @RequestParam(required=false) String apellido,
+                           @RequestParam(required=false) CoberturaMedica coberturaMedica, @RequestParam(required=false)  String fechaNacimiento,
+                           @RequestParam(required=false) Genero genero, @RequestParam(required=false) String mail,
+                           @RequestParam(required=false) String password,@RequestParam(required=false) String password2,
+                           @RequestParam(required=false) String phone, @RequestParam(required=false) Long dni,
                            ModelMap model) {
         try {
-            pacienteServicio.CrearPaciente(nombre, apellido, coberturaMedica, mail, password,password2);
-            model.put("exito", "El paciente ha sido creado con éxito, por favor ingrese sus datos para acceder");
-            return "/login";
+            pacienteServicio.CrearPaciente(nombre, apellido,coberturaMedica,fechaNacimiento,genero, mail, password,password2, phone, dni);
+            model.put("exito", "El paciente ha sido creado con éxito. Por favor ingrese sus datos para acceder");
+            return "redirect:/login";
         } catch (PacienteException ex) {
             model.put("error", ex.getMessage());
+            model.addAttribute("generos", Genero.values());
+            model.addAttribute("coberturas", CoberturaMedica.values());
             return "/register";
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     } //Fin POSTMAPPING REGISTER
 
@@ -56,17 +62,17 @@ public class PacienteControler {
     public String logearPaciente(@RequestParam String email,
                                  @RequestParam String password, ModelMap model){
         try {
-            pacienteServicio.validarInicioSesion(email,password);
-            return "redirect:../index_paciente";
+            Paciente paciente = pacienteServicio.validarInicioSesion(email,password);
+            return "redirect:/index_paciente/" + paciente.getIdPersona();
         }catch (PacienteException ex){
             model.put("error", ex.getMessage());
             return "login.html";
         }
     }
     @GetMapping("/index_paciente/{id}")
-    public String indexPaciente(@PathVariable Long id, ModelMap model){
+    public String indexPaciente(@PathVariable Long id, ModelMap model) {
         Optional<Paciente> optional = pacienteServicio.buscarPorId(id);
-        if(optional.isPresent()){
+        if (optional.isPresent()) {
             Paciente paciente = optional.get();
             model.put("paciente", paciente);
         }

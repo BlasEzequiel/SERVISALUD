@@ -1,5 +1,7 @@
 package com.EGG.ServiSalud.services;
 
+import com.EGG.ServiSalud.Enums.CoberturaMedica;
+import com.EGG.ServiSalud.Enums.Genero;
 import com.EGG.ServiSalud.Enums.Rol;
 import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.exceptions.PacienteException;
@@ -13,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -30,35 +35,19 @@ public class PacienteServices implements UserDetailsService {
     // aquellos metodos que generen modificaciones permanentes en la base de datos debe ser anotados como transacionales, por ejemplos
     // Los metodos listar solo son de consulta entonces no generan cambios en la base de datos, pero los metodos create, update y delete si
     @Transactional
-    public void CrearPaciente(String nombre, String apellido, String coberturaMedica, Date fechaNacimiento,
-                              String genero, String mail, String password, String password2, String phone, Long dni) throws PacienteException {
+    public void CrearPaciente(String nombre, String apellido, CoberturaMedica coberturaMedica, String fechaNacimiento,
+                              Genero genero, String mail, String password, String password2, String phone, Long dni) throws PacienteException, ParseException {
         validacionCrear(nombre, apellido, fechaNacimiento, genero, coberturaMedica, mail, password, password2, phone, dni);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
         Paciente paciente = new Paciente();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         paciente.setNombre(nombre);
         paciente.setDni(dni);
         paciente.setApellido(apellido);
-        paciente.setFechaNacimiento(fechaNacimiento);//cambiamos fechaNacimiento y ponemos new Date() para que se instancie con la fecha del momento en que el objeto se crea
+        paciente.setFechaNacimiento(sdf.parse(fechaNacimiento));//cambiamos fechaNacimiento y ponemos new Date() para que se instancie con la fecha del momento en que el objeto se crea
         paciente.setGenero(genero); //Con el usuarioPaciente creado debemos llamar el repositorio para persistir este objeto,
         paciente.setMail(mail);
         paciente.setPassword(password);
         paciente.setPhone(phone);
-        paciente.setCoberturaMedica(coberturaMedica);
-        paciente.setRol(Rol.PACIENTE);
-        // paciente.setHistoriaClinica(historiaClinica);
-        // paciente.setImagen(imagen);
-
-        // con todos los anteriores atributos completos, llamamos al metodo save para que lo llame y lo persista en la base de datos
-        PacienteRepository.save(paciente); //Este metodo save recibe una entidad por parametro y la guarda, la persiste en la base de datos
-    }
-    @Transactional
-    public void CrearPaciente(String nombre, String apellido, String coberturaMedica,
-                              String mail, String password, String password2) throws PacienteException {
-        validacionCrear(nombre, apellido, coberturaMedica, mail, password, password2);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
-        Paciente paciente = new Paciente();
-        paciente.setNombre(nombre);
-        paciente.setApellido(apellido);
-        paciente.setMail(mail);
-        paciente.setPassword(password);
         paciente.setCoberturaMedica(coberturaMedica);
         paciente.setRol(Rol.PACIENTE);
         // paciente.setHistoriaClinica(historiaClinica);
@@ -79,6 +68,9 @@ public class PacienteServices implements UserDetailsService {
     //
     public Paciente validarInicioSesion(String email, String password) throws PacienteException {
         Paciente paciente = PacienteRepository.buscarPorEmail(email);
+        if(email.isEmpty() || email == null){
+            throw new PacienteException("Todos los campos son obligatorios.");
+        }
         if (paciente == null) {
             throw new PacienteException("El mail ingresado no es correcto");
         }
@@ -132,21 +124,21 @@ public class PacienteServices implements UserDetailsService {
 
 
 */
-    private void validacionCrear(String nombre, String apellido, Date fechaNacimiento, String genero, String coberturaMedica,
+    private void validacionCrear(String nombre, String apellido, String fechaNacimiento, Genero genero, CoberturaMedica coberturaMedica,
                                  String mail, String password, String password2, String phone, Long dni) throws PacienteException {
-        if (nombre.isEmpty()) {
+        if (nombre.isEmpty() || nombre == null) {
             throw new PacienteException("El nombre no puede estar vacío.");
         }
-        if (apellido.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
+        if (apellido.isEmpty() || apellido == null) {//null significa que no hay espacio ocupado en la memoria
             throw new PacienteException("El apellido no puede estar vacío.");
         }
-        if (fechaNacimiento == null) {
+        if (fechaNacimiento == null || fechaNacimiento.isEmpty()) {
             throw new PacienteException("La fecha de nacimiento no puede estar vacía.");
         }
-        if (genero.isEmpty()) {
+        if (genero == null) {
             throw new PacienteException("Debe seleccionar un género.");
         }
-        if (coberturaMedica.isEmpty()) {
+        if (coberturaMedica == null) {
             throw new PacienteException("La cobertura medica no puede estar vacía.");
         }
         if (mail == null) {
@@ -164,29 +156,6 @@ public class PacienteServices implements UserDetailsService {
         if (dni == null) {
             throw new PacienteException("El campo dni es obligatorio.");
         }
-    } // Fin VALIDARDATOS
-    private void validacionCrear(String nombre, String apellido, String coberturaMedica,
-                                 String mail, String password, String password2) throws PacienteException {
-        if (nombre.isEmpty()) {
-            throw new PacienteException("El nombre no puede estar vacío.");
-        }
-        if (apellido.isEmpty()) {//null significa que no hay espacio ocupado en la memoria
-            throw new PacienteException("El apellido no puede estar vacío.");
-        }
-
-        if (coberturaMedica.isEmpty()) {
-            throw new PacienteException("La cobertura medica no puede estar vacía.");
-        }
-        if (mail == null) {
-            throw new PacienteException("El mail no puede estar vacío.");
-        }
-        if (password == null || password.length() <= 5) {
-            throw new PacienteException("El password no puede estar vacío y debe tener 5 dígitos o más.");
-        }
-        if (!password.equals(password2)) {
-            throw new PacienteException("Las contraseñas ingresadas deben ser iguales.");
-        }
-
     } // Fin VALIDARDATOS
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org/" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
@@ -38,23 +38,32 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Crear Usuario</h1>
                             </div>
-                            <form class="user">
+                            <div class="text-center">
+                                <p class="h4 text-gray-900 mb-4" th:if="${error} != null" th:text="${error}"></p>
+                            </div>
+                            <form class="user" th:action="@{/register}" method="POST">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="text" class="form-control form-control-user" name="nombre"  th:value="${nombre}" id="nombre"
                                             placeholder="Nombre">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                        <input type="text" class="form-control form-control-user" name="apellido"  th:value="${apellido}" id="apellido"
                                             placeholder="Apellido">
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                        placeholder="Correo Electronico">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="number" maxlength="12" class="form-control form-control-user" name="phone"  th:value="${phone}" id="phone"
+                                               placeholder="Telefono">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" maxlength="10" class="form-control form-control-user" name="dni"  th:value="${dni}" id="dni"
+                                               placeholder="DNI">
+                                    </div>
                                 </div>
                                 <style>
-                                    .selectCobertura {
+                                    .selectCobertura, .selectGenero {
                                         height: 52px !important;
                                         padding-top: 10px !important;
                                         padding-bottom: 10px !important;
@@ -63,34 +72,46 @@
                                     }
                                 </style>
                                 <div class="form-group">
-                                    <select type="select" class="form-control form-control-user selectCobertura"
-                                        id="exampleInputEmail" placeholder="Cobertura Medica">
-                                        <option value="" disabled selected>Cobertura Medica</option>
-                                        <option value="NoPoseeCobertura">No tengo</option>
-                                        <option value="OSDE">Osde</option>
-                                        <option value="Medicus">Medicus</option>
-                                        <option value="Medife">Medife</option>
-                                        <option value="Avalian">Avalian</option>
+                                    <select type="select" class="form-control form-control-user selectGenero"
+                                            id="genero" name="genero"  placeholder="Genero">
+                                        <option value="" disabled selected>Genero</option>
+                                        <option th:each="genero : ${generos}"
+                                                th:value="${genero}"
+                                                th:text="${genero.name}"/>
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="date" class="form-control form-control-user" name="fechaNacimiento"  th:value="${fechaNacimiento}" id="fechaNacimiento"
+                                    placeholder="Fecha de Nacimiento">
+                                </div>
+                                <div class="form-group">
+                                    <select type="select" class="form-control form-control-user selectCobertura"
+                                        id="coberturaMedica" name="coberturaMedica"  placeholder="Cobertura Medica">
+                                        <option value="" disabled selected>Cobertura Medica</option>
+                                        <option th:each="cobertura : ${coberturas}"
+                                                th:value="${cobertura}"
+                                                th:text="${cobertura}"/>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-user" name="mail"  th:value="${mail}" id="mail"
+                                           placeholder="Correo Electronico">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Contraseña">
+                                            id="password" name="password" placeholder="Contraseña">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repita contraseña">
+                                            id="password2" name="password2" placeholder="Repita contraseña">
                                     </div>
-
                                 </div>
                                 <div class="form-group text-center">
                                     <label for="FotoPerfil">Cargue una foto de Perfil</label>
                                     <input class="form-control rounded-pill" type="file" id="FotoPerfil">
                                 </div>
-                                <a th:href="@{/login.html}" class="btn btn-primary btn-user btn-block">
-                                    Registrar usuario
-                                </a>
+                                <input class="btn btn-primary btn-user btn-block" type="submit" id="enviar" placeholder="Registrar Paciente">
 
                                 <hr>
                                 <div class="text-center">
@@ -99,6 +120,7 @@
                                 <div class="text-center">
                                     <a class="small" th:href="@{/login.html}">Ya tienes cuenta?</a>
                                 </div>
+                            </form>
                         </div>
                     </div>
                 </div>

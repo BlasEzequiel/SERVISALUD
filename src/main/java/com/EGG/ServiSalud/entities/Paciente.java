@@ -1,5 +1,6 @@
 package com.EGG.ServiSalud.entities;
 
+import com.EGG.ServiSalud.Enums.CoberturaMedica;
 import com.EGG.ServiSalud.Enums.Rol;
 import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import jakarta.persistence.*;
@@ -21,7 +22,8 @@ public class Paciente extends Persona {
     private Rol rol;
 
     @Column(name = "cobertura_medica")
-    private String coberturaMedica;
+    @Enumerated(EnumType.STRING)
+    private CoberturaMedica coberturaMedica;
 
 
    /* @ElementCollection
