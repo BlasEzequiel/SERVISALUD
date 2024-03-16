@@ -101,7 +101,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" th:href="@{/index_profesional}" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link collapsed" th:href="@{/login_profesionales}" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-hospital"></i>
                     <span>Sector Profesional</span>
@@ -194,10 +194,10 @@
                     <section id="SeccionMedicos" class="border">
                         <nav>
                             <ul class="MenuMedicos d-flex flex-row">
-                                <li class="mr-4"><a th:href="@{#}">Todos</a></li>
-                                <li class="mr-4"><a th:href="@{#}">Pediatria</a></li>
-                                <li class="mr-4"><a th:href="@{#}">Medico Clinico</a></li>
-                                <li class="mr-4"><a th:href="@{#}">Ginecologia</a></li>
+                                <li class="mr-4"><a th:href="@{/obtenerTodos}">Todos</a></li>
+                                <li class="mr-4"><a th:href="@{/obtenerPorEspecialidad}" th:each="especialidad : ${especialidades}"
+                                                    th:value="${especialidad}"
+                                                    th:text="${especialidad}"></a></li>
                             </ul>
                         </nav>
                     </section>

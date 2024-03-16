@@ -1,5 +1,6 @@
 package com.EGG.ServiSalud.services;
 
+import com.EGG.ServiSalud.Enums.Especialidad;
 import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
@@ -22,6 +23,10 @@ public class ProfesionalService {
 
     public Optional<Profesional> buscarPorId(Long idProfesional) {
         return perRepositorio.findById(idProfesional);
+    }
+
+    public List<Profesional> buscarPorEspecialidad(Especialidad especialidad){
+        return perRepositorio.buscarPorEspecialidad(especialidad);
     }
 
     public List<Profesional> listarProfesionales() {
