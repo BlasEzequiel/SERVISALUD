@@ -14,8 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,12 +34,13 @@ public class PacienteControler {
     } //Fin GETMAPPING REGISTER
     @PostMapping("/register")
     public String registro(@RequestParam(required=false) String nombre, @RequestParam(required=false) String apellido,
-                           @RequestParam(required=false) CoberturaMedica coberturaMedica, @RequestParam(required=false)  String fechaNacimiento,
+                           @RequestParam(required=false) CoberturaMedica coberturaMedica, @RequestParam(required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaNacimiento,
                            @RequestParam(required=false) Genero genero, @RequestParam(required=false) String mail,
                            @RequestParam(required=false) String password,@RequestParam(required=false) String password2,
                            @RequestParam(required=false) String phone, @RequestParam(required=false) Long dni,
                            ModelMap model) {
         try {
+            System.out.println("Paciente Controller :" + fechaNacimiento);
             pacienteServicio.CrearPaciente(nombre, apellido,coberturaMedica,fechaNacimiento,genero, mail, password,password2, phone, dni);
             model.put("exito", "El paciente ha sido creado con éxito. Por favor ingrese sus datos para acceder");
             return "redirect:/login";

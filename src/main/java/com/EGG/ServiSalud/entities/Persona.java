@@ -4,8 +4,9 @@ import com.EGG.ServiSalud.Enums.Genero;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,7 +24,8 @@ public abstract class Persona {
     private Genero genero;
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_de_nacimiento")
-    private Date fechaNacimiento;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
     private String mail;
     private String password;
     private String phone;
