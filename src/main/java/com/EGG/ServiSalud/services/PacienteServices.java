@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,15 +35,17 @@ public class PacienteServices implements UserDetailsService {
     // aquellos metodos que generen modificaciones permanentes en la base de datos debe ser anotados como transacionales, por ejemplos
     // Los metodos listar solo son de consulta entonces no generan cambios en la base de datos, pero los metodos create, update y delete si
     @Transactional
-    public void CrearPaciente(String nombre, String apellido, CoberturaMedica coberturaMedica, String fechaNacimiento,
+    public void CrearPaciente(String nombre, String apellido, CoberturaMedica coberturaMedica, LocalDate fechaNacimiento,
                               Genero genero, String mail, String password, String password2, String phone, Long dni) throws PacienteException, ParseException {
         validacionCrear(nombre, apellido, fechaNacimiento, genero, coberturaMedica, mail, password, password2, phone, dni);//Si no se pasa las excepciones por no completar los datos se lanza la excepción y no se va a ejecutar el codigo debajo de la validación que hicimos //Por lo tanto no se va a persistir
         Paciente paciente = new Paciente();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        //SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         paciente.setNombre(nombre);
         paciente.setDni(dni);
         paciente.setApellido(apellido);
-        paciente.setFechaNacimiento(sdf.parse(fechaNacimiento));//cambiamos fechaNacimiento y ponemos new Date() para que se instancie con la fecha del momento en que el objeto se crea
+        System.out.println("Paciente service :" + fechaNacimiento);
+
+        paciente.setFechaNacimiento(fechaNacimiento);//cambiamos fechaNacimiento y ponemos new Date() para que se instancie con la fecha del momento en que el objeto se crea
         paciente.setGenero(genero); //Con el usuarioPaciente creado debemos llamar el repositorio para persistir este objeto,
         paciente.setMail(mail);
         paciente.setPassword(password);
@@ -124,7 +126,7 @@ public class PacienteServices implements UserDetailsService {
 
 
 */
-    private void validacionCrear(String nombre, String apellido, String fechaNacimiento, Genero genero, CoberturaMedica coberturaMedica,
+    private void validacionCrear(String nombre, String apellido, LocalDate fechaNacimiento, Genero genero, CoberturaMedica coberturaMedica,
                                  String mail, String password, String password2, String phone, Long dni) throws PacienteException {
         if (nombre.isEmpty() || nombre == null) {
             throw new PacienteException("El nombre no puede estar vacío.");
@@ -132,7 +134,7 @@ public class PacienteServices implements UserDetailsService {
         if (apellido.isEmpty() || apellido == null) {//null significa que no hay espacio ocupado en la memoria
             throw new PacienteException("El apellido no puede estar vacío.");
         }
-        if (fechaNacimiento == null || fechaNacimiento.isEmpty()) {
+        if (fechaNacimiento == null) {
             throw new PacienteException("La fecha de nacimiento no puede estar vacía.");
         }
         if (genero == null) {
