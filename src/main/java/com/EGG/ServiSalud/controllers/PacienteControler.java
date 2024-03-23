@@ -80,6 +80,7 @@ public class PacienteControler {
         List<Profesional> profesionales = profService.listarProfesionales();
         model.addAttribute("profesionales", profesionales);
         return "indexUsuario.html";
+        
     }
 
 
