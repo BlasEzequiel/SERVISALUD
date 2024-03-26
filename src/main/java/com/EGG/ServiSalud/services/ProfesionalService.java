@@ -8,15 +8,22 @@ import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProfesionalService {
+public class ProfesionalService implements UserDetailsService {
     @Autowired
     private ProfesionalPersistent perRepositorio;
 
@@ -46,7 +53,7 @@ public class ProfesionalService {
         if(email.isEmpty() || email == null){
             throw new ProfesionalException("Todos los campos son obligatorios.");
         }else{
-            Optional<Profesional> optional= perRepositorio.buscarPorMail(email);
+            Optional<Profesional> optional= perRepositorio.buscarPorMailOptional(email);
             if (optional.isPresent()){
                 Profesional profesional = optional.get();
                 if (!profesional.getPassword().equals(password)){
@@ -142,7 +149,7 @@ public class ProfesionalService {
         }else {
             profesional.setMail(mail);
         }
-        Optional<Profesional> optional = perRepositorio.buscarPorMail(mail);
+        Optional<Profesional> optional = perRepositorio.buscarPorMailOptional(mail);
         if(optional.isPresent()) {
             throw new ProfesionalException("El mail ingresado ya existe");
         }
@@ -160,5 +167,18 @@ public class ProfesionalService {
 
         return profesional;
     } // Fin VALIDARDATOS
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Profesional profesional = perRepositorio.buscarPorMail(email);
+        if (profesional != null) {
+            List<GrantedAuthority> permisos = new ArrayList<>();
+            GrantedAuthority p = new SimpleGrantedAuthority("ROLE_" + profesional.getRol().toString());
+            permisos.add(p);
+            return new User(profesional.getMail(), profesional.getPassword(), permisos);
+        } else {
+            return null;
+        }
+    }
 }
 

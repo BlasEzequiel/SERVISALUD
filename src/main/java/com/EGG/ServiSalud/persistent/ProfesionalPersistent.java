@@ -13,7 +13,10 @@ import java.util.Optional;
 @Repository
 public interface ProfesionalPersistent extends JpaRepository<Profesional,Long> {
     @Query("SELECT p FROM Profesional p WHERE p.mail= :mail")
-    Optional<Profesional> buscarPorMail(@Param("mail")String mail);
+    Optional<Profesional> buscarPorMailOptional(@Param("mail")String mail);
+
+    @Query("SELECT p FROM Profesional p WHERE p.mail= :mail")
+    Profesional buscarPorMail(@Param("mail")String mail);
 
     @Query("SELECT p FROM Profesional p WHERE p.especialidad = :especialidad")
     List<Profesional> buscarPorEspecialidad(@Param("especialidad") Especialidad especialidad);

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -56,7 +57,7 @@ public class ProfesionalController {
         return "loginProfesionales.html";
     }
     @PostMapping("/login_profesionales")
-    public ResponseEntity<String> validarProfesional(@RequestParam String email,
+    public String validarProfesional(@RequestParam String email,
                                                      @RequestParam String password,
                                                      @RequestParam(value = "rol", required = false) Rol rol,
                                                      ModelMap model,
@@ -64,21 +65,21 @@ public class ProfesionalController {
         try {
             if (Rol.PROFESIONAL.equals(rol)) {
                 Profesional profesional = profService.validarInicioDeSesion(email, password);
-                return ResponseEntity.ok().body("/index_profesional/" + profesional.getIdPersona());
+                return "redirect:/index_profesional/id=" + profesional.getIdPersona();
             } else if (Rol.ADMIN.equals(rol)) {
                 adminService.iniciarAdmin(email, password);
-                return ResponseEntity.ok().body("/index_admin");
+                return "redirect:/index_admin";
             } else {
                 redirectAttributes.addFlashAttribute("error", "Rol no válido");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("/login_profesionales");
+                return "redirect:/login_profesionales";
             }
         } catch (ProfesionalException | AdminException ex) {
             redirectAttributes.addFlashAttribute("error", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("/login_profesionales");
+            return "redirect:/login_profesionales";
         }
     }
 
-    @GetMapping("/index_profesional/{id}")
+    @GetMapping("/index_profesional/id={id}")
     public String indexProfesional(@PathVariable("id") Long id, ModelMap model){
         Optional<Profesional> optional = profService.buscarPorId(id);
         if(optional.isPresent()){
