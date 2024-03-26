@@ -23,12 +23,7 @@ public class Profesional extends Persona {
     private String descripcion;
     private Double reputacion;
     private Double valorConsulta;
-    @Column(name = "dias_disponibles")
-    private List<DiasDisponibles> diasDisponibles;
-    @Column(name = "horarios_disponibles")
-    private List<LocalTime> horariosDisponibles;
-    @Column(name = "agenda_no_disponible")
-    private List<LocalDate> agendaNoDisp;
+    private String foto;
     @Enumerated(EnumType.STRING)
     private Rol rol;
 

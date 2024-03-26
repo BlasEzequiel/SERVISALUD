@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -50,9 +51,9 @@ public class ProfesionalController {
 //        horarios.add(LocalTime.of(10, 30));
 //
 //        LocalDate fechaEspecifica = LocalDate.of(2022, 12, 31);
-//        profService.createProfesional("lihuel","amarula", fechaEspecifica, Genero.MASCULINO, "cerebro@chamiprof.com", "222222", "222222", "123432545", 1232131L, 4234324, Especialidad.CARDIOLOGIA, 123.0, diasDisp, horarios , "lorem impusn o como se escriba esta es una descripcion para la validacion de crear profesional");
-//        profService.createProfesional("macarena","lopez", fechaEspecifica, Genero.OTRO, "chami@mmmmm.com", "666666", "666666", "123432545", 1232131L, 4234324, Especialidad.ODONTOLOGIA, 123.0, diasDisp, horarios , "el mundo del reves sobre los pies esta es una descripcion para la validacion de crear profesional");
-//        profService.createProfesional("sebastian","perez", fechaEspecifica, Genero.FEMENINO, "chami@xxxxx.com", "000000", "000000", "123432545", 1232131L, 4234324, Especialidad.CLINICO, 123.0, diasDisp, horarios , "quiero helado esta es una descripcion para la validacion de crear profesional");
+//        profService.createProfesional("lihuel","amarula", fechaEspecifica, Genero.MASCULINO, "cerebro@chamiprof.com", "222222", "222222", "123432545", 1232131L, 4234324, Especialidad.CARDIOLOGIA, 123.0, diasDisp, horarios , "lorem impusn o como se escriba esta es una descripcion para la validacion de crear profesional", "doctor1");
+//        profService.createProfesional("macarena","lopez", fechaEspecifica, Genero.OTRO, "chami@mmmmm.com", "666666", "666666", "123432545", 1232131L, 4234324, Especialidad.ODONTOLOGIA, 123.0, diasDisp, horarios , "el mundo del reves sobre los pies esta es una descripcion para la validacion de crear profesional", "doctor2");
+//        profService.createProfesional("sebastian","perez", fechaEspecifica, Genero.FEMENINO, "chami@xxxxx.com", "000000", "000000", "123432545", 1232131L, 4234324, Especialidad.CLINICO, 123.0, diasDisp, horarios , "quiero helado esta es una descripcion para la validacion de crear profesional", "doctor3");
         model.addAttribute("roles", Rol.values());
         return "loginProfesionales.html";
     }
@@ -103,22 +104,11 @@ public class ProfesionalController {
                                    @RequestParam(required=false) String phone, @RequestParam(required=false) Long dni,
                                    @RequestParam(required=false) Integer matricula, @RequestParam(required=false) Especialidad especialidad,
                                    @RequestParam(required=false) Double valorConsulta, @RequestParam(required=false) List<DiasDisponibles> diasDisponibles,
-                                   @RequestParam(required=false) List<LocalTime> horariosDisponibles,@RequestParam(required=false) String descripcion,
+                                   @RequestParam(required=false) List<String> horariosDisponibles,@RequestParam(required=false) String descripcion,
+                                   @RequestParam(name="file", required=false) MultipartFile file,
                                    ModelMap model){
         try {
-//            List<DiasDisponibles> diasDisp = new ArrayList<>();
-//            diasDisp.add(DiasDisponibles.LUNES);
-//            diasDisp.add(DiasDisponibles.MARTES);
-//            diasDisp.add(DiasDisponibles.MIERCOLES);
-//
-//            List<LocalTime> horarios = new ArrayList<>();
-//            horarios.add(LocalTime.of(10, 30));
-//            horarios.add(LocalTime.of(12, 00));
-//            horarios.add(LocalTime.of(10, 30));
-//
-//            LocalDate fechaEspecifica = LocalDate.of(2022, 12, 31);
-//            profService.createProfesional("camila","perez", fechaEspecifica, Genero.FEMENINO, "chami@chamiprof.com", "123456", "123456", "123432545", 1232131L, 4234324, Especialidad.CLINICO, 123.0, diasDisp, horarios );
-            profService.createProfesional(nombre, apellido, fechaNacimiento, genero, mail, password, password2, phone, dni, matricula, especialidad, valorConsulta, diasDisponibles,horariosDisponibles, descripcion);
+            profService.createProfesional(nombre, apellido, fechaNacimiento, genero, mail, password, password2, phone, dni, matricula, especialidad, valorConsulta, diasDisponibles,horariosDisponibles, descripcion, file);
             model.put("exito", "El profesional ha sido creado con éxito.");
             return "/index_admin";
         }catch (ProfesionalException ex){

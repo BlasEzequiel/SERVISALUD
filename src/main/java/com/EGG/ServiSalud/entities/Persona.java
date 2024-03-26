@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Getter
@@ -30,7 +31,9 @@ public abstract class Persona {
     private String mail;
     private String password;
     private String phone;
-
+    @OneToMany
+    @JoinColumn(name = "id_turno")
+    private List<Turno> listaTurnos;
     public Persona() {
     }
 }

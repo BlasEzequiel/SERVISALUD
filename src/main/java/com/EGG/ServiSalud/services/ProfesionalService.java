@@ -1,8 +1,10 @@
 package com.EGG.ServiSalud.services;
 
 import com.EGG.ServiSalud.Enums.*;
+import com.EGG.ServiSalud.entities.FechaYHorarioTurno;
 import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Profesional;
+import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
@@ -15,7 +17,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -29,12 +36,20 @@ public class ProfesionalService implements UserDetailsService {
 
     @Transactional
     public Profesional createProfesional(String nombre, String apellido, LocalDate fechaNacimiento,
-                                         Genero genero, String mail, String password, String password2, String phone, Long dni,
-                                         Integer matricula, Especialidad especialidad, Double valorConsulta, List<DiasDisponibles> diasDisponibles,
-                                         List<LocalTime> horariosDisponibles, String descripcion) throws ProfesionalException {
-        Profesional profesional = validacionCrear(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
-                diasDisponibles,horariosDisponibles, descripcion);
-        return perRepositorio.save(profesional);
+                                         Genero genero, String mail, String password, String password2,
+                                         String phone, Long dni, Integer matricula, Especialidad especialidad,
+                                         Double valorConsulta, List<DiasDisponibles> diasDisponibles,
+                                         List<String> horariosDisponibles, String descripcion, MultipartFile file)
+            throws ProfesionalException {
+        try{
+            validacionCrear(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
+                    diasDisponibles,horariosDisponibles, descripcion, file);
+            return rellenarProfesional(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
+                    diasDisponibles,horariosDisponibles, descripcion, file);
+
+        } catch (ProfesionalException ex) {
+            throw new ProfesionalException(ex.getMessage());
+        }
     }
 
     public Optional<Profesional> buscarPorId(Long idProfesional) {
@@ -72,82 +87,63 @@ public class ProfesionalService implements UserDetailsService {
 
     }
 
-    private Profesional validacionCrear(String nombre, String apellido, LocalDate fechaNacimiento,
+    private void validacionCrear(String nombre, String apellido, LocalDate fechaNacimiento,
                                         Genero genero, String mail, String password, String password2, String phone, Long dni,
                                         Integer matricula, Especialidad especialidad, Double valorConsulta,
-                                        List<DiasDisponibles> diasDisponibles, List<LocalTime> horariosDisponibles, String descripcion)
+                                        List<DiasDisponibles> diasDisponibles, List<String> horariosDisponibles, String descripcion,
+                                        MultipartFile file)
             throws ProfesionalException {
         Profesional profesional= new Profesional();
         if (nombre.isEmpty() || nombre == null) {
             throw new ProfesionalException("El nombre no puede estar vacío.");
-        } else {
-            profesional.setNombre(nombre);
         }
-
         if (apellido.isEmpty() || apellido == null) {//null significa que no hay espacio ocupado en la memoria
             throw new ProfesionalException("El apellido no puede estar vacío.");
-        } else {
-            profesional.setApellido(apellido);
         }
-
         if (fechaNacimiento == null) {
             throw new ProfesionalException("La fecha de nacimiento no puede estar vacía.");
-        }else {
-            profesional.setFechaNacimiento(fechaNacimiento);
         }
         if (genero == null) {
             throw new ProfesionalException("Debe seleccionar un género.");
-        }else {
-            profesional.setGenero(genero);
         }
         if (phone == null) {
             throw new ProfesionalException("El campo teléfono es obligatorio.");
-        }else {
-            profesional.setPhone(phone);
         }
-
         if (dni == null) {
             throw new ProfesionalException("El campo dni es obligatorio.");
-        }else {
-            profesional.setDni(dni);
         }
         if (matricula == null) {
             throw new ProfesionalException("El campo matricula es obligatorio.");
-        }else {
-            profesional.setMatricula(matricula);
         }
         if (especialidad == null) {
             throw new ProfesionalException("El campo especialidad es obligatorio.");
-        }else {
-            profesional.setEspecialidad(especialidad);
         }
         if (valorConsulta == null) {
             throw new ProfesionalException("El campo valor consulta es obligatorio.");
-        }else {
-            profesional.setValorConsulta(valorConsulta);
         }
         if (diasDisponibles == null || diasDisponibles.isEmpty()) {
             throw new ProfesionalException("El campo días disponibles es obligatorio.");
-        }else {
-            profesional.setDiasDisponibles(diasDisponibles);
         }
         if (horariosDisponibles == null || horariosDisponibles.isEmpty()) {
             throw new ProfesionalException("El campo horarios disponibles es obligatorio.");
-        }else {
-            profesional.setHorariosDisponibles(horariosDisponibles);
         }
         if (descripcion.isEmpty() || descripcion == null) {
             throw new ProfesionalException("La descripcion no puede estar vacía.");
-        } else {
-            profesional.setDescripcion(descripcion);
         }
-
+        if(file.isEmpty() || file == null){
+            throw new ProfesionalException("La imagen es obligatoria");
+        } else {
+            try{
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get("static/img/" + file.getOriginalFilename());
+                Files.write(path, bytes);
+            } catch (IOException e) {
+                throw new ProfesionalException("Archivo no permitido");
+            }
+        }
         //Validación de mail y contraseñas
-
         if (mail == null) {
             throw new ProfesionalException("El mail no puede estar vacío.");
-        }else {
-            profesional.setMail(mail);
         }
         Optional<Profesional> optional = perRepositorio.buscarPorMailOptional(mail);
         if(optional.isPresent()) {
@@ -158,16 +154,56 @@ public class ProfesionalService implements UserDetailsService {
         }
         if (!password.equals(password2)) {
             throw new ProfesionalException("Las contraseñas ingresadas deben ser iguales.");
-        } else {
-            profesional.setPassword(password);
         }
         //Fin Validación de mail y contraseñas
-        // profesional.setImagen(imagen);
-        profesional.setRol(Rol.PROFESIONAL);
-
-        return profesional;
     } // Fin VALIDARDATOS
 
+    private Profesional rellenarProfesional(String nombre, String apellido, LocalDate fechaNacimiento,
+                                            Genero genero, String mail, String password, String password2, String phone, Long dni,
+                                            Integer matricula, Especialidad especialidad, Double valorConsulta,
+                                            List<DiasDisponibles> diasDisponibles, List<String> horariosDisponibles, String descripcion,
+                                            MultipartFile file){
+        Profesional profesional = new Profesional();
+        profesional.setNombre(nombre);
+        profesional.setApellido(apellido);
+        profesional.setFechaNacimiento(fechaNacimiento);
+        profesional.setGenero(genero);
+        profesional.setPhone(phone);
+        profesional.setDni(dni);
+        profesional.setMatricula(matricula);
+        profesional.setEspecialidad(especialidad);
+        profesional.setValorConsulta(valorConsulta);
+        profesional.setDescripcion(descripcion);
+        profesional.setFoto(file.getOriginalFilename());
+        profesional.setMail(mail);
+        profesional.setRol(Rol.PROFESIONAL);
+        profesional.setPassword(password);
+        //Creacion de turnos
+        List<Turno> turnos = crearTurnos(diasDisponibles, horariosDisponibles, profesional.getIdPersona());
+        profesional.setListaTurnos(turnos);
+        return profesional;
+    }
+    private List<Turno> crearTurnos(List<DiasDisponibles> diasDisponibles, List<String> horarios, Long idProfesional ){
+        List<Turno> turnos = new ArrayList<>();
+        for(DiasDisponibles dia : diasDisponibles){
+            for(String horario : horarios){
+                Turno turno = new Turno();
+                FechaYHorarioTurno fechaYHorarioTurno = new FechaYHorarioTurno();
+                fechaYHorarioTurno.setDiaDisponibles(dia);
+                fechaYHorarioTurno.setHorario(horario);
+                Profesional profesional = perRepositorio.getById(idProfesional);
+
+                //Setear valores al turno
+                turno.setProfesional(profesional);
+                turno.setFechaYHorarioTurno(fechaYHorarioTurno);
+                turno.setDisponible(true);
+
+                //Agregar el turno a la lista de turnos
+                turnos.add(turno);
+            }
+        }
+        return turnos;
+    }
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Profesional profesional = perRepositorio.buscarPorMail(email);

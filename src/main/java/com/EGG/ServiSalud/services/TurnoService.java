@@ -1,8 +1,10 @@
-/*package com.EGG.ServiSalud.services;
+package com.EGG.ServiSalud.services;
 
+import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Turno;
 import com.EGG.ServiSalud.exceptions.TurnoException;
-//import com.EGG.ServiSalud.persistent.TurnoPersistent;
+import com.EGG.ServiSalud.persistent.PacientePersistent;
+import com.EGG.ServiSalud.persistent.TurnoPersistent;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,63 +12,45 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-<<<<<<< HEAD
-/*Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
-administrar (consulta, creación, modificación y dar de baja).*/
-/*
-=======
-//Esta clase tiene la responsabilidad de llevar adelante las funcionalidades necesarias para
-administrar (consulta, creación, modificación y dar de baja).
->>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
 @Service
 public class TurnoService {
     @Autowired
     private TurnoPersistent turnoPer;
+    @Autowired
+    private PacientePersistent pacientePer;
 
-    //Crear turno
     @Transactional
-    public Turno crearTurno(Turno turno) {
-        return turnoPer.save(turno);
+    public void actualizarTurno(Long idPaciente, Long idTurno){
+        Turno turno = turnoPer.getById(idTurno);
+        Paciente paciente = pacientePer.getById(idPaciente);
+        turno.setPaciente(paciente);
+        turno.setDisponible(false);
     }
 
-    //Obtener todos los turnos
     public List<Turno> obtenerTurnos(){
         return turnoPer.findAll();
     }
-
-    //Obtener turno por ID
-    public Optional<Turno> obtenerTurnoID(Long id) throws TurnoException{
-        Optional<Turno> turno = turnoPer.findById(id);
-        if(turno.isPresent()){
-            return turno;
-        } else{
-            throw new TurnoException("El turno no existe");
-        }
+    public Turno obtenerTurno(Long idTurno){
+        return turnoPer.getById(idTurno);
+    }
+    public List<Turno> obtenerTurnosDePaciente(Long idPaciente){
+        Paciente paciente = pacientePer.getById(idPaciente);
+        return turnoPer.buscarTurnosPorPaciente(paciente);
     }
 
-    //Obtener turno por Horario
-    public Optional<Turno> obtenerTurnoPorHorario(Integer horario) throws TurnoException {
-        Optional<Turno> turno = turnoPer.findByHorario(horario);
-        if(turno.isPresent()){
-            return turno;
-        } else {
-            throw new TurnoException("El turno no existe");
-        }
-    }
-
-    //Agregar Paciente a turno
     @Transactional
-    public void completarTurno(Turno turno, Long idPaciente){
-        turnoPer.actualizarTurno(turno.getIdTurno(), idPaciente, turno.getDisponible() );
+    public String cancelarTurno(Long idPersona, Long idTurno){
+        Paciente paciente = pacientePer.getById(idPersona);
+        Turno turno = turnoPer.getById(idTurno);
+        List<Turno> turnos = paciente.getListaTurnos();
+        for(Turno t : turnos){
+            if(t.equals(turno)){
+                turnos.remove(t);
+            }
+        }
+        return "Turno eliminado con exito";
     }
 
-    //Cambiar el estado de realizado del turno
-    public void finalizarTurno(Turno turno){
-        turnoPer.cambiarEstadoDeRealizado(turno.getRealizado(), turno.getIdTurno());
-    }
-<<<<<<< HEAD
-=======
 
->>>>>>> f1285cc83007cf3b86d0bef24ab76274655b3e13
+
 }
-*/

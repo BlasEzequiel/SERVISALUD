@@ -1,54 +1,30 @@
-/*package com.EGG.ServiSalud.entities;
-
+package com.EGG.ServiSalud.entities;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
-
+@Getter @Setter
 @Entity
 @Table(name = "turnos")
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class Turno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Getter @Setter @Column(name = "idTurno")
+    @Column(name="id_turno")
     private Long idTurno;
-
     @ManyToOne
-    @Getter @Setter @JoinColumn(name = "idPaciente")
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
-
     @ManyToOne
-    @Getter @Setter @JoinColumn(name = "idProfesional")
+    @JoinColumn(name = "id_profesional")
     private Profesional profesional;
-
-    @Getter @Setter @Column(name = "calificacion")
     private Integer calificacion;
-
-    @Getter @Setter @Column(name = "fecha")
-    @Temporal(TemporalType.DATE)
-    private Date fecha;
-
-    @Getter @Setter @Column(name = "horario")
-    private Integer horarioCita;
-
-    @Getter @Setter @Column(name = "realizado")
+    @OneToOne
+    @JoinColumn(name = "id_fechayhorario")
+    private FechaYHorarioTurno fechaYHorarioTurno;
     private Boolean realizado;
-
-    @Getter @Setter @Column(name = "disponible")
     private Boolean disponible;
 
-    public Turno() {
-    }
-
-    public Turno(Profesional profesional, Date fecha, Integer horarioCita) {
-        this.profesional = profesional;
-        this.fecha = fecha;
-        this.horarioCita = horarioCita;
-        this.realizado = false;
-        this.disponible = true;
-    }
 }
-*/
