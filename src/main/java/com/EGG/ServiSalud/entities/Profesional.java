@@ -6,8 +6,10 @@ import com.EGG.ServiSalud.Enums.Rol;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Entity
@@ -18,14 +20,15 @@ public class Profesional extends Persona {
 
     private Integer matricula;
     private Especialidad especialidad;
+    private String descripcion;
     private Double reputacion;
     private Double valorConsulta;
     @Column(name = "dias_disponibles")
     private List<DiasDisponibles> diasDisponibles;
     @Column(name = "horarios_disponibles")
-    private List<Date> horariosDisponibles;
+    private List<LocalTime> horariosDisponibles;
     @Column(name = "agenda_no_disponible")
-    private List<Date> agendaNoDisp;
+    private List<LocalDate> agendaNoDisp;
     @Enumerated(EnumType.STRING)
     private Rol rol;
 

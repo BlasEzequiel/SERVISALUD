@@ -204,95 +204,31 @@
                     <div class="row border border-3">
                         <nav class="navbar navbar-expand-lg bg-light">
                             <ul class="MenuMedicos d-flex flex-row">
-                                <li class="mr-4"><a href="/obtenerTodos">Todos</a></li>
-                                <li class="mr-4"><a href="/obtenerPorEspecialidad"
-                                        each="especialidad : ${especialidades}" value="${especialidad}"
-                                        text="${especialidad}"></a></li>
+                                <li class="mr-4"><a href="">Todos</a></li>
+                                <li class="mr-4"><a href="">Ginecología</a></li>
+                                <li class="mr-4"><a href="">Médico Clinico</a></li>
+                                <li class="mr-4"><a href="">Pediatría</a></li>
+                                <li class="mr-4"><a href="">Dermatología</a></li>
+                                <li class="mr-4"><a href="">Odontología</a></li>
+                                <li class="mr-4"><a href="">Traumatología</a></li>
                             </ul>
                         </nav>
                         <section class="row m-1">
-                            <div class=" col-xl-4 mb-2">
+                            <div class=" col-xl-4 mb-2" th:each="profesional : ${profesionales}">
                                 <!-- Dashboard example card 1-->
-                                <div class="card-body d-flex border border-primary rounded ml-1 p-2">
+                                <div class="card-body d-flex border rounded ml-1 p-2" id="${profesional.especialidad}">
                                     <div class="d-flex align-items-center">
                                         <div class="me-4 mr-2">
-                                            <h5><strong>Jose Martin Rodriguez</strong></h5>
-                                            <small><strong>-Médico Clinico-</strong></small>
-                                            <p class="text-muted small">Lorem ipsum dolor sit amet
-                                                consectetur
-                                                adipisicing
-                                                elit. Aliquid sed itaque minus, animi voluptatum minima commodi numquam
-                                                iure
-                                            </p>
+                                            <h5 th:text="${profesional.nombre}"><strong></strong></h5>
+                                            <small><strong th:text="${profesional.especialidad}"></strong></small>
+                                            <p class="text-muted small" th:text="${profesional.descripcion}"></p>
                                             <button type="button" class="btn btn-info mb-1">Sacar Turno</button>
                                         </div>
-                                        <img src="../static/img/PerfilesMedicos/PerfilMedico1.jpg" alt="..."
+                                        <img src="@{/img/PerfilesMedicos/PerfilMedico1.jpg}" alt="imagen medico"
                                             style="width: 8rem">
                                     </div>
                                 </div>
                             </div>
-                            <div class=" col-xl-4 mb-2">
-                                <!-- Dashboard example card 1-->
-                                <div class="card-body d-flex border border-secondary rounded ml-1 p-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-4 mr-2">
-                                            <h5><strong>Jose Martin Rodriguez</strong></h5>
-                                            <small><strong>-Médico Clinico-</strong></small>
-                                            <p class="text-muted small">Lorem ipsum dolor sit amet
-                                                consectetur
-                                                adipisicing
-                                                elit. Aliquid sed itaque minus, animi voluptatum minima commodi numquam
-                                                iure
-                                            </p>
-                                            <button type="button" class="btn btn-info mb-1">Sacar Turno</button>
-                                        </div>
-                                        <img src="../static/img/PerfilesMedicos/PerfilMedico1.jpg" alt="..."
-                                            style="width: 8rem">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" col-xl-4 mb-2">
-                                <!-- Dashboard example card 1-->
-                                <div class="card-body d-flex border border-warning rounded ml-1 p-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-4 mr-2">
-                                            <h5><strong>Jose Martin Rodriguez</strong></h5>
-                                            <small><strong>-Médico Clinico-</strong></small>
-                                            <p class="text-muted small">Lorem ipsum dolor sit amet
-                                                consectetur
-                                                adipisicing
-                                                elit. Aliquid sed itaque minus, animi voluptatum minima commodi numquam
-                                                iure
-                                            </p>
-                                            <button type="button" class="btn btn-info mb-1">Sacar Turno</button>
-                                        </div>
-                                        <img src="../static/img/PerfilesMedicos/PerfilMedico1.jpg" alt="..."
-                                            style="width: 8rem">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class=" col-xl-4 mb-2">
-                                <!-- Dashboard example card 1-->
-                                <div class="card-body d-flex border border-danger rounded ml-1 p-2">
-                                    <div class="d-flex align-items-center">
-                                        <div class="me-4 mr-2">
-                                            <h5><strong>Jose Martin Rodriguez</strong></h5>
-                                            <small><strong>-Médico Clinico-</strong></small>
-                                            <p class="text-muted small">Lorem ipsum dolor sit amet
-                                                consectetur
-                                                adipisicing
-                                                elit. Aliquid sed itaque minus, animi voluptatum minima commodi numquam
-                                                iure
-                                            </p>
-                                            <button type="button" class="btn btn-info mb-1">Sacar Turno</button>
-                                        </div>
-                                        <img src="../static/img/PerfilesMedicos/PerfilMedico1.jpg" alt="..."
-                                            style="width: 8rem">
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </section>
                     </div>
                 </div>

@@ -26,6 +26,7 @@ public abstract class Persona {
     @Column(name = "fecha_de_nacimiento")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
+    @Column(name="mail", nullable = false, unique = true)
     private String mail;
     private String password;
     private String phone;

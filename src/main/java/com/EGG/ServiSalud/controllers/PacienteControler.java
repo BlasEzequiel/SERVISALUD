@@ -1,11 +1,12 @@
 package com.EGG.ServiSalud.controllers;
 
 import com.EGG.ServiSalud.Enums.CoberturaMedica;
+import com.EGG.ServiSalud.Enums.Especialidad;
 import com.EGG.ServiSalud.Enums.Genero;
 import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.exceptions.PacienteException;
-import com.EGG.ServiSalud.services.PacienteServices;
+import com.EGG.ServiSalud.services.PacienteService;
 import com.EGG.ServiSalud.services.ProfesionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -15,14 +16,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class PacienteControler {
     @Autowired
-    private PacienteServices pacienteServicio;
+    private PacienteService pacienteServicio;
     @Autowired
     private ProfesionalService profService;
 
@@ -31,7 +31,8 @@ public class PacienteControler {
         model.addAttribute("generos", Genero.values());
         model.addAttribute("coberturas", CoberturaMedica.values());
         return "register.html";
-    } //Fin GETMAPPING REGISTER
+    }
+
     @PostMapping("/register")
     public String registro(@RequestParam(required=false) String nombre, @RequestParam(required=false) String apellido,
                            @RequestParam(required=false) CoberturaMedica coberturaMedica, @RequestParam(required=false)@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaNacimiento,
@@ -40,10 +41,9 @@ public class PacienteControler {
                            @RequestParam(required=false) String phone, @RequestParam(required=false) Long dni,
                            ModelMap model) {
         try {
-            System.out.println("Paciente Controller :" + fechaNacimiento);
             pacienteServicio.CrearPaciente(nombre, apellido,coberturaMedica,fechaNacimiento,genero, mail, password,password2, phone, dni);
-            model.put("exito", "El paciente ha sido creado con éxito. Por favor ingrese sus datos para acceder");
-            return "redirect:/login";
+            model.put("exito", "El paciente ha sido creado con Ã©xito. Por favor ingrese sus datos para acceder");
+            return "/login";
         } catch (PacienteException ex) {
             model.put("error", ex.getMessage());
             model.addAttribute("generos", Genero.values());
@@ -52,11 +52,11 @@ public class PacienteControler {
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-    } //Fin POSTMAPPING REGISTER
+    }
 
     @GetMapping("/login")
     public String login(){
-        return "login.html";
+        return "login";
     }
 
     @PostMapping("/login")
@@ -64,10 +64,12 @@ public class PacienteControler {
                                  @RequestParam String password, ModelMap model){
         try {
             Paciente paciente = pacienteServicio.validarInicioSesion(email,password);
+            model.put("paciente", paciente);
             return "redirect:/index_paciente/" + paciente.getIdPersona();
+
         }catch (PacienteException ex){
             model.put("error", ex.getMessage());
-            return "login.html";
+            return "login";
         }
     }
     @GetMapping("/index_paciente/{id}")
@@ -80,10 +82,14 @@ public class PacienteControler {
         List<Profesional> profesionales = profService.listarProfesionales();
         model.addAttribute("profesionales", profesionales);
         return "indexUsuario.html";
-        
     }
 
-
+    @GetMapping("/listarProfesionalesPorEspecialidad")
+    public String buscarPorEspecialidad(@RequestParam Especialidad especialidad, ModelMap model){
+        List<Profesional> listaProfesionales = profService.buscarPorEspecialidad(especialidad);
+        model.addAttribute("profesionales", listaProfesionales);
+        return "/index_paciente";
+    }
     @GetMapping("/crear_turno/{id}")
     public String crearTurno(@PathVariable Long id, ModelMap model){
         return "";

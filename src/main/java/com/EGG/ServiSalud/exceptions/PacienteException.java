@@ -1,5 +1,8 @@
 package com.EGG.ServiSalud.exceptions;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
 public class PacienteException extends Exception {
 
     public PacienteException() {
@@ -11,6 +14,3 @@ public class PacienteException extends Exception {
 
 
 }
-//Creamos una clase expetions que herede los atributos del padre Exception  y le pasa al super el mensaje recibido por parametro
-// Basicamente generamos etsa clase para diferenciar los errores que tengamos en la logica del negocio de los errores y backs
-//Propios del sistema entonces nos llevamos PacienteException al PacienteServices que eestabamos editando

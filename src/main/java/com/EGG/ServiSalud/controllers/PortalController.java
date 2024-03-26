@@ -20,7 +20,6 @@ public class PortalController {
     public String home(ModelMap model){
         List<Profesional> profesionales = profService.listarProfesionales();
         model.addAttribute("profesionales", profesionales);
-        model.put("especialidades", Especialidad.values());
         return "index.html";
     }
 

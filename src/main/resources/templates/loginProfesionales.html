@@ -66,34 +66,30 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                                     </div>
-                                    <form id="loginForm" class="user">
+                                    <div class="text-center">
+                                        <p class="h4 text-gray-900 mb-4" th:if="${error} != null" th:text="${error}"></p>
+                                    </div>
+                                    <form class="user" th:action="@{/login_profesionales}" method="POST" id="formProf">
                                         <div class="form-group">
                                             <select type="select" class="form-control form-control-user selectEspecialidad"
-                                                id="exampleInputEspecialidad">
-                                                <option value="" disabled selected>Tipo de usuario</option>
-                                                <option value="Profesional">Profesional</option>
-                                                <option value="Admin">Administrador</option>
+                                                    id="rol" name="rol">
+                                                <option th:value="disable" disabled selected>Tipo de usuario</option>
+                                                <option th:each="rol : ${roles}"
+                                                        th:unless="${rol.name == 'PACIENTE'}"
+                                                        th:value="${rol}"
+                                                        th:text="${rol.name}"/>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
-                                                id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Ingrese su Correo electronico">
+                                                   id="email" name="email" aria-describedby="emailHelp"
+                                                   placeholder="Ingrese su Correo electronico">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Contraseña">
-                                            <!-- Verification Div controlled by Js -->
-                                            <div id="error-message" class="d-none text-danger small mt-2">
-                                                Correo electronico y/o contraseña incorrectos.
-                                            </div>
+                                                   id="password" name="password" placeholder="Contraseña">
                                         </div>
-
-                                        <div class="form-group "></div>
-                                        <a th:href="@{#}" id="loginButton" class="btn btn-primary btn-user btn-block">
-                                            INICIAR SESION
-                                        </a>
-
+                                        <input class="btn btn-primary btn-user btn-block" type="submit" id="sesion" placeholder="Iniciar Sesion">
                                     </form>
 
 
