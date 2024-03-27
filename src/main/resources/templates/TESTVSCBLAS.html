@@ -49,7 +49,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" th:href="@{index.html}">
                     <i class="fas fa-fw fa-home"></i>
                     <span>Inicio</span></a>
             </li>
@@ -63,24 +63,17 @@
             </div>
 
             <!-- Nav Item - Utilities Collapse Menu //// AGREGA d-none cuando inicia sesion -->
-            <li class="nav-item ">
-                <a class="nav-link collapsed" href="/login" data-toggle="collapse" data-target="#collapseUtilities"
+            <li class="nav-item d-none">
+                <a class="nav-link collapsed" th:href="@{#}" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Iniciar Sesion</span>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link collapsed" href="/register" data-toggle="collapse" data-target="#collapseUtilities"
-                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-user"></i>
-                    <span>Registrate</span>
+                    <span>Inicie Sesion</span>
                 </a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+            <li class="nav-item d-none">
+                <a class="nav-link collapsed" th:href="@{#}" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-stethoscope"></i>
                     <span>Nuestros Profesionales</span>
@@ -88,30 +81,33 @@
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/login" data-toggle="collapse" data-target="#collapseUtilities"
+            <li class="nav-item d-none">
+                <a class="nav-link collapsed" th:href="@{#}" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-id-card-clip"></i>
                     <span>Sacar Turno</span>
                 </a>
             </li>
 
+            <!-- Divider -->
             <hr class="sidebar-divider">
 
+            <!-- Heading -->
             <div class="sidebar-heading">
                 Interno
             </div>
 
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="/login_profesionales" data-toggle="collapse"
-                    data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item d-none">
+                <a class="nav-link collapsed" th:href="@{#}" data-toggle="collapse" data-target="#collapsePages"
+                    aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-hospital"></i>
                     <span>Sector Profesional</span>
                 </a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider d-md-block">
+            <hr class="sidebar-divider d-none d-md-block">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

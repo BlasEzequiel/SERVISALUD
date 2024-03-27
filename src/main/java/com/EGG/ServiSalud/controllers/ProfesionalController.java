@@ -59,10 +59,10 @@ public class ProfesionalController {
     }
     @PostMapping("/login_profesionales")
     public String validarProfesional(@RequestParam String email,
-                                                     @RequestParam String password,
-                                                     @RequestParam(value = "rol", required = false) Rol rol,
-                                                     ModelMap model,
-                                                     RedirectAttributes redirectAttributes) {
+                                     @RequestParam String password,
+                                     @RequestParam(value = "rol", required = false) Rol rol,
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) {
         try {
             if (Rol.PROFESIONAL.equals(rol)) {
                 Profesional profesional = profService.validarInicioDeSesion(email, password);
@@ -92,8 +92,14 @@ public class ProfesionalController {
     @GetMapping("/index_admin")
     public String indexAdmin(ModelMap model){
         List<Profesional> listaProfesionales = profService.listarProfesionales();
+        model.addAttribute("profesionales", listaProfesionales);
+        model.addAttribute("especialidades", Especialidad.values());
+        model.addAttribute("diasDisponibles", DiasDisponibles.values());
+        model.addAttribute("coberturas", CoberturaMedica.values());
+        model.addAttribute("generos", Genero.values());
         return "indexAdministrador.html";
     }
+
 
 
     @PostMapping("/crear_profesional")
@@ -104,11 +110,12 @@ public class ProfesionalController {
                                    @RequestParam(required=false) String phone, @RequestParam(required=false) Long dni,
                                    @RequestParam(required=false) Integer matricula, @RequestParam(required=false) Especialidad especialidad,
                                    @RequestParam(required=false) Double valorConsulta, @RequestParam(required=false) List<DiasDisponibles> diasDisponibles,
-                                   @RequestParam(required=false) List<String> horariosDisponibles,@RequestParam(required=false) String descripcion,
+                                   @RequestParam(required=false) String horarioInicio, @RequestParam(required=false) String horarioSalida,
+                                   @RequestParam(required=false) String descripcion,
                                    @RequestParam(name="file", required=false) MultipartFile file,
                                    ModelMap model){
         try {
-            profService.createProfesional(nombre, apellido, fechaNacimiento, genero, mail, password, password2, phone, dni, matricula, especialidad, valorConsulta, diasDisponibles,horariosDisponibles, descripcion, file);
+            profService.createProfesional(nombre, apellido, fechaNacimiento, genero, mail, password, password2, phone, dni, matricula, especialidad, valorConsulta, diasDisponibles,horarioInicio, horarioSalida, descripcion, file);
             model.put("exito", "El profesional ha sido creado con éxito.");
             return "/index_admin";
         }catch (ProfesionalException ex){

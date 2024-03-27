@@ -1,11 +1,8 @@
 package com.EGG.ServiSalud.services;
 
 import com.EGG.ServiSalud.Enums.*;
-import com.EGG.ServiSalud.entities.FechaYHorarioTurno;
-import com.EGG.ServiSalud.entities.Paciente;
 import com.EGG.ServiSalud.entities.Profesional;
 import com.EGG.ServiSalud.entities.Turno;
-import com.EGG.ServiSalud.exceptions.PacienteException;
 import com.EGG.ServiSalud.exceptions.ProfesionalException;
 import com.EGG.ServiSalud.persistent.ProfesionalPersistent;
 import jakarta.transaction.Transactional;
@@ -23,8 +20,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +39,16 @@ public class ProfesionalService implements UserDetailsService {
                                          Genero genero, String mail, String password, String password2,
                                          String phone, Long dni, Integer matricula, Especialidad especialidad,
                                          Double valorConsulta, List<DiasDisponibles> diasDisponibles,
-                                         List<String> horariosDisponibles, String descripcion, MultipartFile file)
+                                         String horarioInicio, String horarioSalida, String descripcion, MultipartFile file)
             throws ProfesionalException {
         try{
             validacionCrear(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
-                    diasDisponibles,horariosDisponibles, descripcion, file);
-            return rellenarProfesional(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
-                    diasDisponibles,horariosDisponibles, descripcion, file);
-
+                    diasDisponibles,horarioInicio, horarioSalida, descripcion, file);
+            Profesional profesional = rellenarProfesional(nombre, apellido, fechaNacimiento, genero,mail, password, password2, phone, dni,matricula, especialidad, valorConsulta,
+                     descripcion, file);
+            perRepositorio.save(profesional);
+            crearTurnos(horarioInicio, horarioSalida, diasDisponibles, profesional);
+            return profesional;
         } catch (ProfesionalException ex) {
             throw new ProfesionalException(ex.getMessage());
         }
@@ -88,10 +90,10 @@ public class ProfesionalService implements UserDetailsService {
     }
 
     private void validacionCrear(String nombre, String apellido, LocalDate fechaNacimiento,
-                                        Genero genero, String mail, String password, String password2, String phone, Long dni,
-                                        Integer matricula, Especialidad especialidad, Double valorConsulta,
-                                        List<DiasDisponibles> diasDisponibles, List<String> horariosDisponibles, String descripcion,
-                                        MultipartFile file)
+                                 Genero genero, String mail, String password, String password2, String phone, Long dni,
+                                 Integer matricula, Especialidad especialidad, Double valorConsulta,
+                                 List<DiasDisponibles> diasDisponibles, String horarioInicio, String horarioSalida, String descripcion,
+                                 MultipartFile file)
             throws ProfesionalException {
         Profesional profesional= new Profesional();
         if (nombre.isEmpty() || nombre == null) {
@@ -124,7 +126,10 @@ public class ProfesionalService implements UserDetailsService {
         if (diasDisponibles == null || diasDisponibles.isEmpty()) {
             throw new ProfesionalException("El campo días disponibles es obligatorio.");
         }
-        if (horariosDisponibles == null || horariosDisponibles.isEmpty()) {
+        if (horarioInicio == null || horarioInicio.isEmpty()) {
+            throw new ProfesionalException("El campo horarios disponibles es obligatorio.");
+        }
+        if (horarioSalida == null || horarioSalida.isEmpty()) {
             throw new ProfesionalException("El campo horarios disponibles es obligatorio.");
         }
         if (descripcion.isEmpty() || descripcion == null) {
@@ -161,7 +166,7 @@ public class ProfesionalService implements UserDetailsService {
     private Profesional rellenarProfesional(String nombre, String apellido, LocalDate fechaNacimiento,
                                             Genero genero, String mail, String password, String password2, String phone, Long dni,
                                             Integer matricula, Especialidad especialidad, Double valorConsulta,
-                                            List<DiasDisponibles> diasDisponibles, List<String> horariosDisponibles, String descripcion,
+                                            String descripcion,
                                             MultipartFile file){
         Profesional profesional = new Profesional();
         profesional.setNombre(nombre);
@@ -178,29 +183,35 @@ public class ProfesionalService implements UserDetailsService {
         profesional.setMail(mail);
         profesional.setRol(Rol.PROFESIONAL);
         profesional.setPassword(password);
-        //Creacion de turnos
-        List<Turno> turnos = crearTurnos(diasDisponibles, horariosDisponibles, profesional.getIdPersona());
-        profesional.setListaTurnos(turnos);
         return profesional;
     }
-    private List<Turno> crearTurnos(List<DiasDisponibles> diasDisponibles, List<String> horarios, Long idProfesional ){
+    private List<Turno> crearTurnos(String horarioInicio, String horarioSalida, List<DiasDisponibles> diasDisponibles, Profesional profesional ){
         List<Turno> turnos = new ArrayList<>();
+
+        List<Turno> turnosNuevos = new ArrayList<>();
         for(DiasDisponibles dia : diasDisponibles){
-            for(String horario : horarios){
-                Turno turno = new Turno();
-                FechaYHorarioTurno fechaYHorarioTurno = new FechaYHorarioTurno();
-                fechaYHorarioTurno.setDiaDisponibles(dia);
-                fechaYHorarioTurno.setHorario(horario);
-                Profesional profesional = perRepositorio.getById(idProfesional);
-
-                //Setear valores al turno
-                turno.setProfesional(profesional);
-                turno.setFechaYHorarioTurno(fechaYHorarioTurno);
-                turno.setDisponible(true);
-
-                //Agregar el turno a la lista de turnos
-                turnos.add(turno);
+            DayOfWeek diaSemana = DayOfWeek.valueOf(dia.toString().toUpperCase());
+            LocalTime horaTurno = LocalTime.parse(horarioInicio, DateTimeFormatter.ofPattern("HH:mm"));
+            LocalTime horaSalida = LocalTime.parse(horarioSalida, DateTimeFormatter.ofPattern("HH:mm"));
+            while (horaTurno != horaSalida){
+                LocalDateTime fechaTurno = LocalDateTime.now().with(diaSemana).with(horaTurno);
+                Turno nuevoTurno = new Turno(profesional , fechaTurno, true);
+                turnosNuevos.add(nuevoTurno);
+                horaTurno = horaTurno.plusHours(1);
             }
+        }
+        for(Turno aux: turnosNuevos){
+            turnos.add(aux);
+            LocalDateTime fechaTurno2 = aux.getFechaYHorarioTurno().plusDays(7);
+            Turno nuevoTurno = new Turno(profesional , fechaTurno2, true);
+            turnos.add(nuevoTurno);
+            LocalDateTime fechaTurno3 = aux.getFechaYHorarioTurno().plusDays(14);
+            Turno nuevoTurno2 = new Turno(profesional , fechaTurno3, true);
+            turnos.add(nuevoTurno2);
+            LocalDateTime fechaTurno4 = aux.getFechaYHorarioTurno().plusDays(21);
+            Turno nuevoTurno3 = new Turno(profesional , fechaTurno4, true);
+            turnos.add(nuevoTurno3);
+
         }
         return turnos;
     }
@@ -217,4 +228,5 @@ public class ProfesionalService implements UserDetailsService {
         }
     }
 }
+
 

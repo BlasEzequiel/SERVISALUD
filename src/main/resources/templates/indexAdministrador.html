@@ -197,7 +197,7 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <button type="button" th:href="@{#}" class="btn btn-primary btn-icon-split" data-toggle="modal"
+                            <button type="button" class="btn btn-primary btn-icon-split" data-toggle="modal"
                                 data-target="#myModal">
                                 <span class="icon text-white-50">
                                     <i class="fas fa-hospital-user"></i>
@@ -217,55 +217,57 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form th:action="@{/crear_profesional}" method="post">
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <input type="text" class="form-control form-control-user"
-                                                            id="FirstName" placeholder="Nombre">
+                                                            id="FirstName" name="nombre" placeholder="Nombre">
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control form-control-user"
-                                                            id="LastName" placeholder="Apellido">
+                                                            id="LastName" name="apellido" placeholder="Apellido">
                                                     </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="date" name="fechaNacimiento" class="form-control form-control-user" id="FechaNacimiento" placeholder="Fecha de Nacimiento">
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <select type="select"
                                                             class="form-control form-control-user selectCobertura"
-                                                            id="exampleInputEmail" placeholder="Sexo">
-                                                            <option value="" disabled selected>Sexo</option>
-                                                            <option value="Masculino">Masculino</option>
-                                                            <option value="Femenino">Femenino</option>
-                                                            <option value="Otro">Otro</option>
+                                                            id="InputGenero" name="genero">
+                                                            <option value="" disabled selected>Genero</option>
+                                                            <option th:each="genero : ${generos}"
+                                                                    th:value="${genero}"
+                                                                    th:text="${genero.name}"/>
                                                         </select>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <input type="phone" class="form-control form-control-user"
-                                                            id="Telefono" placeholder="Telefono">
+                                                            id="Telefono" name="phone" placeholder="Telefono">
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <input type="text" class="form-control form-control-user"
-                                                            id="DNI" placeholder="Documento">
+                                                            id="DNI" name="dni" placeholder="Documento">
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control form-control-user"
-                                                            id="Matricula" placeholder="N° Matricula">
+                                                            id="Matricula" name="matricula" placeholder="N° Matricula">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <select type="select" class="form-control form-control-user"
-                                                        id="Especialidad" placeholder="Especialidad">
+                                                        id="Especialidad" name="especialidad">
                                                         <option value="" disabled selected>Especialidad</option>
-                                                        <option value="Pediatria">Pediatria</option>
-                                                        <option value="Ginecologia">Ginecologia</option>
-                                                        <option value="Clinico">Clinico</option>
-                                                        <option value="Cardiología">Cardiología</option>
+                                                        <option th:each="especialidad : ${especialidades}"
+                                                                th:value="${especialidad}"
+                                                                th:text="${especialidad.name}"/>
                                                     </select>
                                                 </div>
                                                 <div>
-                                                    <textarea type="text" name="Description" id="Descripcion Profesion"
+                                                    <textarea type="text" name="descripcion" id="Descripcion Profesion"
                                                         required="" rows="2" class="form-control form-control-user"
                                                         placeholder="Breve descripcion y experiencia..."></textarea>
                                                 </div>
@@ -282,80 +284,61 @@
                                                 <div class="form-group">
                                                     <label>Dias Laborales</label>
                                                     <div>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Lunes">Lunes </input>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Martes">Martes
-                                                        </input>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Miercoles">Miercoles </input>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Jueves">Jueves
-                                                        </input>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Viernes">Viernes </input>
-                                                        <input type="checkbox" name="DiasSemana" class="arregloRadio2"
-                                                            value="Sabado">Sabado </input>
+                                                        <input type="checkbox" name="diasDisponibles" class="arregloRadio2"
+                                                               th:each="diaDisponible : ${diasDisponibles}"
+                                                               th:value="${diaDisponible}"
+                                                               th:text="${diaDisponible.name}"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <label for="HoraEntrada">Horario de Entrada</label>
                                                         <input type="time" class="form-control form-control-user"
-                                                            id="HoraEntrada" placeholder="Hora Ingreso">
+                                                            id="HoraEntrada" name="horaInicio" placeholder="Hora Ingreso">
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <label for="HoraSalida">Horario de Salida</label>
                                                         <input type="time" class="form-control form-control-user"
-                                                            id="HoraSalida" placeholder="Hora Salida">
+                                                            id="HoraSalida" name="horaSalida" placeholder="Hora Salida">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Coberturas Medicas Asociadas</label>
+                                                    <label>Coberturas Médicas Asociadas</label>
                                                     <div>
-                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
-                                                            value="NoPoseeCobertura">Sin
-                                                        Arreglo</input>
-                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
-                                                            value="OSDE">Osde
-                                                        </input>
-                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
-                                                            value="Medicus">Medicus </input>
-                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
-                                                            value="Medife">Medife
-                                                        </input>
-                                                        <input type="radio" name="CoberturaMedica" class="arregloRadio"
-                                                            value="Avalian">Avalian </input>
+                                                        <input type="radio" name="coberturaMedica" class="arregloRadio"
+                                                               th:each="cobertura : ${coberturas}"
+                                                               th:value="${cobertura}"
+                                                               th:text="${cobertura.name}"/>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="text" class="form-control form-control-user"
-                                                        id="PrecioConsulta" placeholder="Valor Consulta">
+                                                        id="PrecioConsulta" name="valorConsulta" placeholder="Valor Consulta">
                                                 </div>
                                                 <div class="form-group">
                                                     <input type="email" class="form-control form-control-user"
-                                                        id="Email" placeholder="Correo Electronico">
+                                                        id="Email" name="mail" placeholder="Correo Electronico">
                                                 </div>
                                                 <div class="form-group row">
                                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                                         <input type="password" class="form-control form-control-user"
-                                                            id="InputPassword" placeholder="Contraseña">
+                                                            id="InputPassword" name="password" placeholder="Contraseña">
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <input type="password" class="form-control form-control-user"
-                                                            id="RepeatPassword" placeholder="Repita contraseña">
+                                                            id="RepeatPassword" name="password2" placeholder="Repita contraseña">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="FotoPerfil">Cargue una foto de Perfil</label>
-                                                    <input class="form-control" type="file" id="FotoPerfil">
+                                                    <input class="form-control" name="file" type="file" id="FotoPerfil">
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"
                                                 data-dismiss="modal">Cerrar</button>
-                                            <button type="button" class="btn btn-primary">Registrar</button>
+                                            <button type="submit" class="btn btn-primary" id="enviar">Registrar</button>
                                         </div>
                                     </div>
                                 </div>
@@ -378,81 +361,19 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-                                            <td>Hugo</td>
-                                            <td>Perez</td>
-                                            <td>Pediatra</td>
-                                            <td>hugoperez@gmail.com</td>
-                                            <td>5 Estrellas</td>
-                                            <td>$7.000</td>
-                                            <td><a th:href="@{#}" class="btn btn-success btn-circle">
-                                                    <i class="fas fa-check"></i></a>
-                                                <a th:href="@{#}" class="btn btn-danger btn-circle">
+                                        <tr th:each="profesional : ${profesionales}">
+                                            <td th:text="${profesional.nombre}"></td>
+                                            <td th:text="${profesional.apellido}"></td>
+                                            <td th:text="${profesional.especialidad}"></td>
+                                            <td th:text="${profesional.mail}"></td>
+                                            <td th:text="${profesional.reputacion}"></td>
+                                            <td th:text="'$'+ ${profesional.valorConsulta}"></td>
+                                                <a th:href="@{/borrar_profesional/{id}(id=${profesional.id})}" class="btn btn-danger btn-circle">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
-
                                         </tr>
-                                        <tr>
-                                            <td>Hugo</td>
-                                            <td>Perez</td>
-                                            <td>Pediatra</td>
-                                            <td>hugoperez@gmail.com</td>
-                                            <td>5 Estrellas</td>
-                                            <td>$7.000</td>
-                                            <td><a th:href="@{#}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-pen-to-square"></i></a>
-                                                <a th:href="@{#}" class="btn btn-danger btn-circle">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
 
-                                        </tr>
-                                        <tr>
-                                            <td>Hugo</td>
-                                            <td>Perez</td>
-                                            <td>Pediatra</td>
-                                            <td>hugoperez@gmail.com</td>
-                                            <td>5 Estrellas</td>
-                                            <td>$7.000</td>
-                                            <td><a th:href="@{#}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i></a>
-                                                <a th:href="@{#}" class="btn btn-danger btn-circle">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>Hugo</td>
-                                            <td>Perez</td>
-                                            <td>Pediatra</td>
-                                            <td>hugoperez@gmail.com</td>
-                                            <td>5 Estrellas</td>
-                                            <td>$7.000</td>
-                                            <td><a th:href="@{#}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i></a>
-                                                <a th:href="@{#}" class="btn btn-danger btn-circle">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td>Hugo</td>
-                                            <td>Perez</td>
-                                            <td>Pediatra</td>
-                                            <td>hugoperez@gmail.com</td>
-                                            <td>5 Estrellas</td>
-                                            <td>$7.000</td>
-                                            <td><a th:href="@{#}" class="btn btn-success btn-circle">
-                                                <i class="fas fa-check"></i></a>
-                                                <a th:href="@{#}" class="btn btn-danger btn-circle">
-                                                    <i class="fas fa-trash"></i>
-                                                </a>
-                                            </td>
-
-                                        </tr>
 
                                     </tbody>
                                 </table>

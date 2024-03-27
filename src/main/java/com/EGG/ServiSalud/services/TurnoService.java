@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 public class TurnoService {
-    @Autowired
+   /* @Autowired
     private TurnoPersistent turnoPer;
     @Autowired
     private PacientePersistent pacientePer;
@@ -49,7 +49,7 @@ public class TurnoService {
             }
         }
         return "Turno eliminado con exito";
-    }
+    }*/
 
 
 

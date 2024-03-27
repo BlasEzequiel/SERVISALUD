@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Persona {
-    @Column(name = "numero_de_identificación")
+    @Column(name = "id")
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long idPersona;

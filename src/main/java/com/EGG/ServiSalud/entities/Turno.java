@@ -2,6 +2,7 @@ package com.EGG.ServiSalud.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 @Getter @Setter
 @Entity
@@ -21,10 +22,14 @@ public class Turno {
     @JoinColumn(name = "id_profesional")
     private Profesional profesional;
     private Integer calificacion;
-    @OneToOne
-    @JoinColumn(name = "id_fechayhorario")
-    private FechaYHorarioTurno fechaYHorarioTurno;
+    @Column(name = "fechayhorario")
+    private LocalDateTime fechaYHorarioTurno;
     private Boolean realizado;
     private Boolean disponible;
 
+    public Turno(Profesional profesional, LocalDateTime fechaYHorarioTurno, Boolean disponible) {
+        this.profesional = profesional;
+        this.fechaYHorarioTurno = fechaYHorarioTurno;
+        this.disponible = disponible;
+    }
 }

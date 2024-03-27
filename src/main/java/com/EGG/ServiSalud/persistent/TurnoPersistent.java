@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Repository
 public interface TurnoPersistent extends JpaRepository<Turno,Long> {
-    @Query("SELECT * FROM Turno t WHERE t.paciente = :paciente")
+    /*@Query("SELECT * FROM Turno t WHERE t.paciente = :paciente")
     List<Turno> buscarTurnosPorPaciente(@Param("paciente") Paciente paciente);
 
     @Query("SELECT * FROM Turno t WHERE t.profesional = :profesional")
@@ -21,5 +21,5 @@ public interface TurnoPersistent extends JpaRepository<Turno,Long> {
 
     @Query("SELECT * FROM Turno t WHERE t.fechaYHorarioTurno.diaDisponibles = :diaDisponible ")
     List<Turno> buscarTurnosPorDia(@Param("diaDisponible") DiasDisponibles diaDisponible);
-
+*/
 }
